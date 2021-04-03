@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld message='Привет, Vue!'/>
+    <div id="app2">
+      <span v-bind:title="message">
+      Наведи на меня курсор на пару секунд,
+      чтобы увидеть динамически связанное значение title!
+    </span>
+    </div>
   </div>
 </template>
 

@@ -2,32 +2,31 @@
 <html lang="">
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
 </head>
 <body>
-<div id="app3">
-    {{ message }}
+<div id="watch-example">
+    <p>
+        Авторизуйтесь
+        <button v-on:click="getLogin()">через Google</button>
+    </p>
+    <div v-html="token"></div>
+    <button v-on:click="onSuccess()">На сервер!</button>
+    <div v-html="userName"></div>
 </div>
-<div id="app-2">
-  <span v-if="seen":title="message">
-    Наведи на меня курсор на пару секунд,
-    чтобы увидеть динамически связанное значение title!
-  </span>
-</div>
-<div id="app-4">
-    <ol>
-        <li v-for="todo in todos">
-            {{ todo.text }}
-        </li>
-    </ol>
-</div>
-<div id="app-5">
-    <p>{{ message }}</p>
-    <button v-on:click="reverseMessage">Перевернуть сообщение</button>
-</div>
-<div id="app-6">
-    <p>{{ message }}</p>
-    <input v-model="message">
-</div>
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+<script>
+    function renderButton() {
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '411869951411-n8ildki91mtcu2he4kjprefd7kf74fuf.apps.googleusercontent.com',
+                scope: 'profile email',
+            });
+        });
+    }
+</script>
 <script src="index.js"/>
 </body>
 </html>

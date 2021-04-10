@@ -1,42 +1,38 @@
-var app3 = new Vue({
-    el: '#app3',
+var watchExampleVM = new Vue({
+    el: '#watch-example',
     data: {
-        message: 'Привет, Vue!'
-    }
-})
-
-var app2 = new Vue({
-    el: '#app-2',
-    data: {
-        seen:true,
-        message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
-    }
-})
-
-var app4 = new Vue({
-    el: '#app-4',
-    data: {
-        todos: [
-            { text: 'Изучить JavaScript' },
-            { text: 'Изучить Vue' },
-            { text: 'Создать что-нибудь классное' }
-        ]
-    }
-})
-var app5 = new Vue({
-    el: '#app-5',
-    data: {
-        message: 'Привет, Vue.js!'
+        name: '',
+        userName: 'Пока вы не зададите вопрос, я не могу ответить!',
+        token:''
+    },
+    watch: {
+        // эта функция запускается при любом изменении вопроса
+        question: function (newQuestion, oldQuestion) {
+            this.userName = 'Ожидаю, авторизации...'
+        }
     },
     methods: {
-        reverseMessage: function () {
-            this.message = this.message.split('').reverse().join('')
+        getLogin: function () {
+            auth2.grantOfflineAccess()
+                .then(result => {
+                    console.log(result);
+                    this.token= result.code;
+                })
+                .catch(reault => {
+                    console.log(reault);
+                });
+        }
+        ,onSuccess:function (){
+            axios.post('http://localhost:8080/api/auth/login',JSON.stringify({login:this.token,password:"asdasd"}),{
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(responce => {
+                    this.name=responce;
+                }).catch(responce => {
+                    console.log(responce);
+                });
         }
     }
-})
-var app6 = new Vue({
-    el: '#app-6',
-    data: {
-        message: 'Привет, Vue!'
-    }
-})
+});

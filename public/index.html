@@ -1,32 +1,22 @@
-<!DOCTYPE html>
-<html lang="">
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
-
-</head>
-<body>
-<div id="watch-example">
-    <p>
-        Авторизуйтесь
-        <button v-on:click="getLogin()">через Google</button>
-    </p>
-    <div v-html="token"></div>
-    <button v-on:click="onSuccess()">На сервер!</button>
-    <div v-html="userName"></div>
-</div>
-<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
-<script>
-    function renderButton() {
-        gapi.load('auth2', function () {
-            auth2 = gapi.auth2.init({
-                client_id: '411869951411-n8ildki91mtcu2he4kjprefd7kf74fuf.apps.googleusercontent.com',
-                scope: 'profile email',
-            });
-        });
-    }
-</script>
-<script src="index.js"/>
-</body>
+<html>
+    <head>
+        <meta http-equiv="cache-control" content="no-cache" />
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+        <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="app">
+            <a href="http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:8081/oauth2_redirect">Войти через Google</a>
+            <div>{{this.state}}</div>
+            <div :class="[isActive ? 'active' : 'inactive' ]">Пользователь : {{this.fullName}}</div>
+            <button v-on:click="logout">Выйти</button>
+            <div v-for="(value, name, index) in this.userObject">
+                {{index}}<li>{{ name }}: {{ value }}</li>
+            </div>
+        </div>
+        <script src="index.js"/>
+    </body>
 </html>

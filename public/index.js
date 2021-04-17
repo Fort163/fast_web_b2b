@@ -1,38 +1,54 @@
-var watchExampleVM = new Vue({
-    el: '#watch-example',
-    data: {
-        name: '',
-        userName: 'Пока вы не зададите вопрос, я не могу ответить!',
-        token:''
+const Foo = { template: '<div>foo</div>' }
+const Bar = { template: '<div>bar</div>' }
+const Oauth2 = { template: '<div>Авторизован</div>' }
+
+const router = new VueRouter({
+    routes:[
+        { path: '/foo', component: Foo },
+        { path: '/bar', component: Bar },
+        { path: '/oauth2_redirect', component: Oauth2,props: (route) => ({ query: route.query.token }) }
+    ]
+})
+
+var app = new Vue({
+    el: '#app',
+    data:{
+       state:'Жду...',
+       fullName:'',
+       accessToken:'',
+       userObject: {}
     },
-    watch: {
-        // эта функция запускается при любом изменении вопроса
-        question: function (newQuestion, oldQuestion) {
-            this.userName = 'Ожидаю, авторизации...'
-        }
-    },
-    methods: {
-        getLogin: function () {
-            auth2.grantOfflineAccess()
-                .then(result => {
-                    console.log(result);
-                    this.token= result.code;
+    created(){
+        var params = window.location.search
+        let number = params.indexOf("?accessToken=");
+        if(number > -1){
+            this.accessToken = params.substring(params.indexOf("=")+1);
+            this.state = 'Авторизован';
+            console.log(this.accessToken)
+            window.history.replaceState({}, document.title, "http://localhost:8081/");
+            axios.get('http://localhost:8080/user/me',
+                    { headers: {"Authorization" : "Bearer " + this.accessToken }}
+                )
+                .then(response => {
+                        this.userObject = response.data;
+                        this.fullName = response.data.fullName
+                    }
+                )
+                .catch(function (error) {
+                    this.state = 'Ошибка! Не могу связаться с API. ' + error;
                 })
-                .catch(reault => {
-                    console.log(reault);
-                });
         }
-        ,onSuccess:function (){
-            axios.post('http://localhost:8080/api/auth/login',JSON.stringify({login:this.token,password:"asdasd"}),{
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(responce => {
-                    this.name=responce;
-                }).catch(responce => {
-                    console.log(responce);
-                });
+    }
+    ,computed:{
+        isActive: function (){
+            return this.fullName && this.fullName != null
+        }
+    }
+    ,methods:{
+        logout:function (){
+            this.accessToken='';
+            this.fullName='';
+            this.state = 'Жду...';
         }
     }
 });

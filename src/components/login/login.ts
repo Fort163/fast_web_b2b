@@ -1,22 +1,15 @@
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-const Oauth2 = { template: '<div>Авторизован</div>' }
+import Vue from 'vue';
+import axios from 'axios/index'
 
-const router = new VueRouter({
-    routes:[
-        { path: '/foo', component: Foo },
-        { path: '/bar', component: Bar },
-        { path: '/oauth2_redirect', component: Oauth2,props: (route) => ({ query: route.query.token }) }
-    ]
-})
 
-var app = new Vue({
-    el: '#app',
-    data:{
-       state:'Жду...',
-       fullName:'',
-       accessToken:'',
-       userObject: {}
+Vue.component("login",{
+    data() {
+        return {
+            state: 'Жду...',
+            fullName: '',
+            accessToken: '',
+            userObject: {}
+        }
     },
     created(){
         var params = window.location.search
@@ -35,13 +28,8 @@ var app = new Vue({
                     }
                 )
                 .catch(function (error) {
-                    this.state = 'Ошибка! Не могу связаться с API. ' + error;
+                    'Ошибка! Не могу связаться с API. ' + error;
                 })
-        }
-    }
-    ,computed:{
-        isActive: function (){
-            return this.fullName && this.fullName != null
         }
     }
     ,methods:{
@@ -49,6 +37,7 @@ var app = new Vue({
             this.accessToken='';
             this.fullName='';
             this.state = 'Жду...';
+            this.userObject = {};
         }
     }
 });

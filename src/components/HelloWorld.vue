@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ message }}</h1>
+    <h1>{{ item1 }}</h1>
+    <h1>{{ item2 }}</h1>
+    <button @click="setValue">Установить</button>
   </div>
 </template>
 
@@ -9,6 +12,18 @@ export default {
   name: 'HelloWorld',
   props: {
     message: String
+  },
+  data(){
+    return {
+      item1:"",
+      item2:""
+    }
+  },
+  methods:{
+    setValue(){
+      this.item1 = "Hello";
+      this.item2 = "world";
+    }
   }
 }
 </script>

@@ -1,0 +1,19 @@
+.main{
+    font-family: verdana;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    height: 100%;
+    width: 100%;
+}
+
+.workPlace{
+    height: 90%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+
+}

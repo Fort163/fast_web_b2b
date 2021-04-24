@@ -1,7 +1,6 @@
 <template>
-  <div class="hello">
+  <div class="simple">
     <h1>{{ message }}</h1>
-    <h1>{{ item1 }}</h1>
     <h1>{{ item2 }}</h1>
     <button @click="setValue">Установить</button>
   </div>
@@ -15,14 +14,17 @@ export default {
   },
   data(){
     return {
-      item1:"",
+      user:{},
       item2:""
     }
   },
   methods:{
     setValue(){
-      this.item1 = "Hello";
-      this.item2 = "world";
+
+    },
+    addUser(user){
+      this.item2 = "User set";
+      this.user = user;
     }
   }
 }

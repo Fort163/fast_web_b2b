@@ -2,27 +2,35 @@
   "name": "fast_web_b2b",
   "version": "0.1.0",
   "private": true,
+  "main": "webpack.config.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --potr 8081",
     "build": "tsc",
     "install": "npm install -g",
     "lint": "vue-cli-service lint",
-    "start": "npm run build"
+    "start": "webpack-dev-server --hot --inline --history-api-fallback"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "es6-promise": "^4.2.8",
     "typescript": "^4.2.4",
-    "vue": "^2.6.11"
-  },
-  "devDependencies": {
+    "vue": "^3.0.11",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.1.2",
+    "vuex": "^4.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "babel-loader": "^6.4.1",
+    "css-loader": "^0.27.3",
+    "style-loader": "^0.16.0",
+    "ts-loader": "^9.0.2",
+    "vue-loader": "^12.1.0"
   },
   "eslintConfig": {
     "root": true,
@@ -42,5 +50,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "devDependencies": {
+    "webpack-cli": "^4.6.0"
+  }
 }

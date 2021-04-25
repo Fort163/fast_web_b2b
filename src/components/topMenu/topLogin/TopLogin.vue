@@ -2,7 +2,7 @@
   <div :class="{'logined' : isLogin}">
     <div :class="[isLogin ? 'topMenuLogin' : 'inactive' ]">
       <div>
-        <img class="photo" alt="No photo" :src="this.userObject.userpic">
+        <img class="photo" alt="No photo" :src="this.userpic">
         <div>{{this.welcome}}</div>
         <div>{{this.companyName}}</div>
         <div>{{this.employee}}</div>
@@ -15,24 +15,6 @@
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
-import LoginInfoModel from '../../store/model.ts';
+<script src="./topLogin.ts"></script>
 
-export default class TopLogin extends Vue {
-
-  props: {
-    userObject: LoginInfoModel;
-  }
-  data(){
-    return {
-      asd:'asd'
-    }
-  }
-
-}
-</script>
-
-<style scoped>
-
-</style>
+<style src="./topLogin.css"></style>

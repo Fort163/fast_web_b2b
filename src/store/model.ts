@@ -1,3 +1,5 @@
+import Vuex from "vuex";
+
 
 export interface State{
     loginModel : LoginInfoModel
@@ -34,11 +36,3 @@ export interface DateModel{
 export interface DateTimeModel extends DateModel{
     time: String
 }
-
-export class AppState implements State{
-    loginModel: LoginInfoModel;
-    constructor() {
-        loginModel:{}
-    }
-}
-

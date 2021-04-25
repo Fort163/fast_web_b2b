@@ -1,7 +1,8 @@
-import appComponent from './app/app'
-import  {createApp} from 'vue'
+import appComponent from './app/App.vue'
+import  Vue from 'vue'
 
-const app = createApp({
+Vue.config.productionTip = false
+
+new Vue({
   render: (h:any) => h(appComponent),
-})
-app.mount('#mainDiv')
+}).$mount('#mainDiv')

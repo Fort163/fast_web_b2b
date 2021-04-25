@@ -1,30 +1,40 @@
 import Vue from 'vue'
-import {AppState} from '../store/model'
-import Vuex, {mapState} from "vuex";
+import {createStore} from '../store/store'
+import Vuex from "vuex";
+import Component from "vue-class-component";
+import Login from '@/components/login/Login.vue'
+import FastWebApi from '@/components/api/FastWebApi.vue'
+import TopPanel from "@/components/topMenu/topPanel/TopPanel.vue";
+import {State, UserInfoModel} from "@/store/model";
 
-function createStore(){
-    const storeApp = new Vuex.Store({
-        state: new AppState(),
-        mutations: {
-            login (state,value) {
-                state.loginModel.accessToken = value;
-                console.log("Set accessToken")
-            },
-            setCurrentUser (state,value) {
-                state.loginModel.currentUser = value;
-                console.log("Set currentUser")
-            }
-        }
-    });
-    storeApp.state.loginModel.accessToken = '12312312';
-    return storeApp;
-}
 
-const appComponent = Vue.extend( {
-    name:'app',
+Vue.use(Vuex)
+@Component({
+    components: {
+        Login,
+        TopPanel,
+        FastWebApi
+    },
     store:createStore(),
-    computed: mapState({
-        message : state => state
-    })
-});
-export default appComponent;
+    created() {
+        const params :string = window.location.search
+        const number :number = params.indexOf("?accessToken=");
+        if (number > -1) {
+            const accessToken = params.substring(params.indexOf("=") + 1);
+            this.$store.commit('login',accessToken);
+            const user = FastWebApi.methods.getApi('/user/me');
+            this.$store.commit('setCurrentUser',user);
+            window.history.replaceState({}, document.title, "http://localhost:8081/");
+        }
+    }
+})
+export default class App extends Vue {
+    get state():State{
+        return this.$store.state
+    }
+
+    get isAuthorized():boolean{
+        return this.state.loginModel.accessToken!='';
+    }
+
+}

@@ -1,7 +1,7 @@
 <template>
   <div :class="'topMenuLogin'">
     <div>
-      <img class="photo" alt="No photo" :src="this.userObject.userpic">
+      <img class="photo" alt="No photo" :src="this.userpic">
       <div>{{this.welcome}}</div>
       <div>{{this.companyName}}</div>
       <div>{{this.employee}}</div>
@@ -14,9 +14,16 @@
 </template>
 
 <script>
-export default {
-  name: "TopMenu"
-}
+  import Component from "vue-class-component";
+  import Vue from "vue";
+
+  @Component({
+    components: {
+    }
+  })
+  export default class TopMenu extends Vue {
+
+  }
 </script>
 
 <style scoped>

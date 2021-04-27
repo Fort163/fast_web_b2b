@@ -1,13 +1,11 @@
-import Vuex from "vuex";
-
-
 export interface State{
     loginModel : LoginInfoModel
 }
 
 export interface LoginInfoModel{
-    accessToken: string,
-    currentUser: UserInfoModel
+    accessToken: string | null,
+    currentUser: UserInfoModel | null,
+    currentMenuItem: ComboboxModel | null
 }
 
 export interface UserInfoModel{
@@ -25,7 +23,19 @@ export interface UserInfoModel{
     lastVisit:DateTimeModel,
     verified: Boolean,
     status: String,
-    provider: String
+    provider: String,
+    roleList: Role[]
+}
+
+export interface Role{
+    id: Number,
+    name: String,
+    permissionList: Permission[]
+}
+
+export interface Permission{
+    id: Number,
+    permission: String
 }
 
 export interface DateModel{
@@ -35,4 +45,9 @@ export interface DateModel{
 
 export interface DateTimeModel extends DateModel{
     time: String
+}
+
+export interface ComboboxModel{
+    id: Number,
+    name: String
 }

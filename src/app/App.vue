@@ -1,10 +1,11 @@
 <template>
-  <div class="main">
+  <div :class="[isAuthorized?'main-size':'main-login']">
     <div v-if="!isAuthorized">
-      <Login></Login>
+      <Login/>
     </div>
-    <div v-if="isAuthorized">
-      <TopPanel></TopPanel>
+    <div v-if="isAuthorized" class="main-work">
+      <TopPanel/>
+      <WorkPlace/>
     </div>
   </div>
 </template>

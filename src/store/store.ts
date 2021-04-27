@@ -1,51 +1,18 @@
 import Vuex, {Store} from "vuex";
-import {DateModel, DateTimeModel, LoginInfoModel, State, UserInfoModel} from "@/store/model";
+import {ComboboxModel, LoginInfoModel, State, UserInfoModel} from "@/store/model";
 
-function convertLoginInfoModel() : LoginInfoModel{
+function emptytLoginInfoModel() : LoginInfoModel{
     return {
-        accessToken : '',
-        currentUser : convertUserInfoModel()
-    }
-}
-
-function convertUserInfoModel() : UserInfoModel{
-    return {
-        id: 0,
-        fullName: '',
-        firstName: '',
-        lastName: '',
-        userpic: '',
-        email: '',
-        locale: '',
-        login: '',
-        gender: '',
-        phoneNumber: '',
-        birthDay:convertDateModel(),
-        lastVisit:convertDateTimeModel(),
-        verified: false,
-        status: '',
-        provider: ''
-    }
-}
-function convertDateModel() : DateModel{
-    return {
-        date:'',
-        day:''
-    }
-}
-
-function convertDateTimeModel() : DateTimeModel{
-    return {
-        date:'',
-        day:'',
-        time:''
+        accessToken : null,
+        currentUser : null,
+        currentMenuItem : null
     }
 }
 
 class AppState implements State{
     loginModel: LoginInfoModel;
     constructor() {
-        this.loginModel = convertLoginInfoModel();
+        this.loginModel = emptytLoginInfoModel();
     }
 }
 
@@ -60,6 +27,10 @@ export function createStore() : Store<State>{
             setCurrentUser (state : State,value : UserInfoModel) {
                 state.loginModel.currentUser = value;
                 console.log("Set currentUser")
+            },
+            setCurrentMenuItem (state : State,value : ComboboxModel) {
+                state.loginModel.currentMenuItem = value;
+                console.log("Set currentMenuItem : "+value.name )
             }
         }
     });

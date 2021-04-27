@@ -1,24 +1,19 @@
-import Vuex, { mapState } from 'vuex';
-import axios from 'axios';
-import Vue from 'vue';
-import Component from "vue-class-component";
-import {State} from "@/store/model";
+import axios from "axios";
 
-Vue.use(Vuex)
-@Component({
-    components: {
-    }
-})
-export default class App extends Vue {
-    private URL : string = 'http://localhost:8080';
-    get state():State{
-        return  this.$store.state
-    }
+interface LoginApi {
+    accessToken: string,
+    getApi<T>(uri:string):Promise<T>,
+    postApi<T>(uri:string):Promise<T>,
+}
 
-    get accessToken() : string{
-        return this.state.loginModel.accessToken
+export class FastWebApi implements LoginApi{
+    URL : string;
+    accessToken: string;
+    constructor(accessToken:string,URL:string) {
+        this.accessToken = accessToken;
+        this.URL = URL;
     }
-    public getApi(uri : string): Promise<any> {
+    getApi<T>(uri:string): Promise<T> {
         return axios.get(this.URL + uri,
             {headers: {"Authorization": "Bearer " + this.accessToken}}
         )
@@ -30,7 +25,8 @@ export default class App extends Vue {
                 console.log('Ошибка! Не могу связаться с API. ' + error);
             })
     }
-    public postApi(uri : string) : Promise<any>{
+
+    postApi<T>(uri:string): Promise<T> {
         return axios.post(this.URL + uri,
             {headers: {"Authorization": "Bearer " + this.accessToken}}
         )
@@ -42,4 +38,6 @@ export default class App extends Vue {
                 console.log('Ошибка! Не могу связаться с API. ' + error);
             })
     }
+
+
 }

@@ -1,4 +1,4 @@
-.main{
+.main-login{
     font-family: verdana;
     text-align: center;
     display: flex;
@@ -9,11 +9,18 @@
     width: 100%;
 }
 
-.workPlace{
-    height: 90%;
-    width: 100%;
+.main-work{
+    font-family: verdana;
+    text-align: center;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
     align-items:center;
+    height: 100%;
+    width: 100%;
+}
 
+.main-size{
+    height: 100%;
+    width: 100%;
 }

@@ -1,18 +1,16 @@
 <template>
-  <div :class="{'logined' : isLogin}">
-    <div :class="[isLogin ? 'topMenuLogin' : 'inactive' ]">
-      <div>
+    <div class="topMenuLogin">
+      <div class="loginInfo">
         <img class="photo" alt="No photo" :src="this.userpic">
         <div>{{this.welcome}}</div>
         <div>{{this.companyName}}</div>
         <div>{{this.employee}}</div>
       </div>
-      <div class="topMenuButtons">
-        <button class="exit-button" v-on:click="logout"></button>
-        <button class="settings-button" v-on:click="settings"></button>
+      <div class="loginButtons">
+        <button class="exit-button" @click="logout"></button>
+        <button class="settings-button" @click="settings"></button>
       </div>
     </div>
-  </div>
 </template>
 
 <script src="./topLogin.ts"></script>

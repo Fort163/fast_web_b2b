@@ -1,31 +1,17 @@
 <template>
-  <div :class="'topMenuLogin'">
-    <div>
-      <img class="photo" alt="No photo" :src="this.userpic">
-      <div>{{this.welcome}}</div>
-      <div>{{this.companyName}}</div>
-      <div>{{this.employee}}</div>
-    </div>
-    <div class="topMenuButtons">
-      <button class="exit-button" v-on:click="logout"></button>
-      <button class="settings-button" v-on:click="settings"></button>
-    </div>
+  <div class="topMenu">
+    <ComboBox v-bind:title="'Администрирование'" v-bind:items="this.adminMenu" v-bind:func="this.setItem"></ComboBox>
+    <ComboBox v-bind:title="'Моя компания'" v-bind:items="this.adminMenu" v-bind:func="this.setItem"></ComboBox>
+    <ComboBox v-bind:title="'Мои заказы'" v-bind:items="this.adminMenu" v-bind:func="this.setItem"></ComboBox>
+    <ComboBox v-bind:title="'Разное'" v-bind:items="this.adminMenu" v-bind:func="this.setItem"></ComboBox>
+    <div>{{this.item()}}</div>
   </div>
 </template>
 
-<script>
-  import Component from "vue-class-component";
-  import Vue from "vue";
+<script src="./topMenu.ts">
 
-  @Component({
-    components: {
-    }
-  })
-  export default class TopMenu extends Vue {
-
-  }
 </script>
 
-<style scoped>
+<style src="./topMenu.css">
 
 </style>

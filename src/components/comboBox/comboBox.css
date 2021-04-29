@@ -1,5 +1,9 @@
 .combobox-label{
+    overflow: hidden;
+    text-wrap: initial;
+    display: flex;
     position: relative;
+    justify-content: center;
     top: 15px;
 }
 
@@ -8,12 +12,13 @@
     box-shadow: 10px 10px 10px 10px #efeeee;
     background-color: #ffffff;
     border: 0px;
-    border-radius: 5px;
-    width: 20%;
-    height: 40%;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
     font-family: cursive;
     font-size: 20px;
     text-align-last: center;
+    cursor: pointer;
 }
 
 .combobox:focus{
@@ -25,24 +30,31 @@
     border-radius: 10px;
 }
 
-.combobox-ul-hidden{
-    display: none;
-}
-
 .combobox-ul{
     position: relative;
-    padding-top: 20px;
-    right: 20px;
+    padding-top: 35px;
+    right: 30px;
+}
+
+.comboAnimation-enter-active{/*, .comboAnimation-leave-active {*/
+    transition: all 0.5s;
+}
+
+.comboAnimation-enter{/*, .comboAnimation-leave-to {*/
+    opacity: 0.3;
+    transform: translateY(-50%);
 }
 
 .li-combobox{
     width: 100%;
     border-radius: 10px;
-    height: 50px;
+    min-height: 40px;
+    max-height: 80px;
     margin: 10px;
     list-style-type: none;
+    word-break: break-word;
+    overflow: hidden;
 }
-
 .first{
     background-color: #b1b0b0;
 }

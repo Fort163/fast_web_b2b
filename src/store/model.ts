@@ -1,11 +1,12 @@
 export interface State{
-    loginModel : LoginInfoModel
+    loginModel : LoginInfoModel,
+    currentMenuItem: ComboboxModel | null
+
 }
 
 export interface LoginInfoModel{
     accessToken: string | null,
-    currentUser: UserInfoModel | null,
-    currentMenuItem: ComboboxModel | null
+    currentUser: UserInfoModel | null
 }
 
 export interface UserInfoModel{
@@ -30,12 +31,17 @@ export interface UserInfoModel{
 export interface Role{
     id: Number,
     name: String,
-    permissionList: Permission[]
+    permissionList: PermissionModel[]
 }
 
-export interface Permission{
+export interface PermissionModel{
     id: Number,
     permission: String
+    displayName: String
+    admin:boolean,
+    company:boolean,
+    service:boolean,
+    other:boolean
 }
 
 export interface DateModel{
@@ -50,4 +56,11 @@ export interface DateTimeModel extends DateModel{
 export interface ComboboxModel{
     id: Number,
     name: String
+}
+
+export interface TopMenuModel {
+    admin: ComboboxModel[],
+    company: ComboboxModel[],
+    service: ComboboxModel[],
+    other: ComboboxModel[]
 }

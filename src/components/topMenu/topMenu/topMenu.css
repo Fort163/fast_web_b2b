@@ -4,5 +4,38 @@
     background-color: #ffffff;
     box-shadow: 0 2px 0 0 #bfbfbf;
     display: flex;
+    flex-direction: column;
+}
+
+.topItems{
+    width: 100%;
+    height: 50%;
+    display: flex;
     flex-direction: row;
+}
+
+.topSelect{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    color: #96a1a2;
+    font-family: cursive;
+    font-size: xxx-large;
+    align-items: center;
+    justify-content: center;
+}
+
+.labelAnimation-enter-active,.labelAnimation-leave-active {
+    transition: all .5s;
+}
+
+.labelAnimation-enter {
+    opacity: .5;
+    transform: translateX(500px);
+}
+
+.labelAnimation-leave-to {
+    opacity: .5;
+    transform: translateX(-500px);
 }

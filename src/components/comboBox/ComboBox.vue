@@ -1,11 +1,11 @@
 <template >
   <div :class="'combobox'" @mousemove="setEnter(true)" @mouseleave="setEnter(false)">
     <label :class="'combobox-label'">{{this.title}}</label>
-    <ul :class="this.enter?'combobox-ul':'combobox-ul-hidden'">
-      <li :class="'li-combobox first'" @click="func(item)" v-for="(item) in this.items" :key="item.id">
+    <transition-group v-if="this.enter || true" v-bind:class="'combobox-ul'" name="comboAnimation" tag="ul">
+      <li :class="'li-combobox first'" @click="func(item)" v-for="(item) in this.comboItem" :key="item.id">
         {{ item.name }}
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 

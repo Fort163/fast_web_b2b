@@ -66,7 +66,7 @@ export interface TopMenuModel {
 }
 
 export interface TableData extends Object{
-    id: Number;
+    id: Number | null;
 }
 
 export interface TableSettings {

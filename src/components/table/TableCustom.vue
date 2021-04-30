@@ -3,9 +3,9 @@
     <h1>Table</h1>
     <TrCustom :columns="tableColumn" :key="'title'" :isTitle="true" />
     <transition-group :class="'dataTable'" name="dataAnimation" tag="div">
-      <TrCustom v-for="item in this.tableData" :key="item.id" :dataItem="item" :isTitle="false"/>
+      <TrCustom v-for="(item,index) in this.tableData" :key="index" :dataItem="item" :isTitle="false" :index="index"/>
     </transition-group>
-
+    <button :class="'tableAdd'" @click="addItem()"></button>
   </div>
 </template>
 

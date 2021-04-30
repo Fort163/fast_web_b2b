@@ -22,4 +22,10 @@ export default class TableCustom extends Vue{
         return this.settings?.columns
     }
 
+    public addItem() : void{
+        this.tableData?.push(new class implements TableData {
+            id = null;
+        })
+    }
+
 }

@@ -11,6 +11,7 @@ export default class TrCustom extends Vue{
     @Inject('settings') settings: TableSettings | undefined;
     @Prop() dataItem: TableData | undefined;
     @Prop() isTitle: Boolean | undefined;
+    @Prop() index: number | undefined;
 
     get tableSettings():TableSettings | undefined{
         return <TableSettings>this.settings;
@@ -38,12 +39,8 @@ export default class TrCustom extends Vue{
     }
 
     public deleteDefault(){
-        const clearMass = this.dataTable?.filter(item => {
-            if(item.id != this.dataItem?.id){
-                return item;
-            }
-        });
-        this.dataTable = clearMass;
+        // @ts-ignore
+        this.dataTable?.splice(this.index,1);
     }
 
     public selectFunc(){

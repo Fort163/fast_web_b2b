@@ -6,7 +6,7 @@
       <ComboBox v-if="this.showService" v-bind:style="{width: this.sizeCombo+'%'}" v-bind:title="'Мои заказы'" v-bind:items="this.topMenu.service" v-bind:func="this.setItem"></ComboBox>
       <ComboBox v-if="this.showOther" v-bind:style="{width: this.sizeCombo+'%'}" v-bind:title="'Разное'" v-bind:items="this.topMenu.other" v-bind:func="this.setItem"></ComboBox>
     </div>
-    <transition name="labelAnimation">
+    <transition name="labelAnimation" mode="out-in">
       <div class="topSelect" :key="this.item()">{{this.item()}}</div>
     </transition>
   </div>

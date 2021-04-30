@@ -1,9 +1,13 @@
 import Component from "vue-class-component";
 import Vue from "vue";
-import {Role, State, UserInfoModel} from "@/store/model";
+import {State} from "@/store/model";
+import CreateRole from "@/components/workPlace/createRole/CreateRole.vue";
+import CreatePermission from "@/components/workPlace/createPermission/CreatePermission.vue";
 
 @Component({
     components: {
+        CreateRole,
+        CreatePermission
     }
 })
 export default class WorkPlace extends Vue {
@@ -11,7 +15,7 @@ export default class WorkPlace extends Vue {
         return this.$store.state
     }
 
-    get roleList() : Role[] | undefined{
-        return this.state.loginModel.currentUser?.roleList
+    get currentFrame() : String | undefined{
+        return this.state.currentMenuItem?.name;
     }
 }

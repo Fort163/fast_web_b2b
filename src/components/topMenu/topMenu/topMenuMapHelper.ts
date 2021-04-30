@@ -19,7 +19,7 @@ class TopMenuClass implements TopMenuModel{
             if(item.admin){
                 this.admin.push(new ComboboxTopMenu(item));
             }
-            if(item.admin){
+            if(item.company){
                 this.company.push(new ComboboxTopMenu(item));
             }
             if(item.service){

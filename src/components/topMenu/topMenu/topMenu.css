@@ -32,10 +32,10 @@
 
 .labelAnimation-enter {
     opacity: .5;
-    transform: translateX(500px);
+    transform: translateX(100%);
 }
 
 .labelAnimation-leave-to {
     opacity: .5;
-    transform: translateX(-500px);
+    transform: translateX(-100%);
 }

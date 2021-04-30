@@ -64,3 +64,50 @@ export interface TopMenuModel {
     service: ComboboxModel[],
     other: ComboboxModel[]
 }
+
+export interface TableData extends Object{
+    id: Number;
+}
+
+export interface TableSettings {
+    columns: TableColumnItem[],
+    data: TableData[],
+    paging : boolean | false,
+    pagingSize : number | 10,
+    defaultButtons : boolean | true,
+    selectFunc : Function | null,
+    deleteFunc : Function | null
+}
+
+export abstract class DefaultTableSettings implements TableSettings{
+    defaultButtons = true;
+    paging = false;
+    pagingSize = 10;
+    selectFunc = null;
+    deleteFunc = null;
+    abstract columns: TableColumnItem[];
+    abstract data: any[];
+
+}
+
+export abstract class DefaultTableColumnItem implements TableColumnItem{
+    itemType : ColumnTypes = ColumnTypes.text;
+    width : String | null =  null;
+    abstract itemName: String;
+    abstract title: String;
+}
+
+export interface TableColumnItem {
+    title: String,
+    itemName: String,
+    itemType: ColumnTypes,
+    width: String | null
+}
+
+export enum ColumnTypes{
+    text,
+    date,
+    datetime,
+    email,
+    number,
+}

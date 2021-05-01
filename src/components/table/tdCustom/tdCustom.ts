@@ -23,6 +23,17 @@ export default class TdCustom extends Vue{
         }
     }
 
+    set value(val : any|undefined){
+            let name : String = '';
+            if(this.column){
+                name = this.column.itemName;
+            }
+            const result = Object.prototype.hasOwnProperty.call(this.dataItem, name.toString());
+            if(result)
+                this.dataItem[name.toString()] = val;
+    }
+
+
     get width() : String | null | undefined{
         const width = this.column?.width;
         if(width){

@@ -39,8 +39,7 @@ export default class TrCustom extends Vue{
     }
 
     public deleteDefault(){
-        // @ts-ignore
-        this.dataTable?.splice(this.index,1);
+        this.dataTable?.splice(this.index?this.index:-1,1);
     }
 
     public selectFunc(){

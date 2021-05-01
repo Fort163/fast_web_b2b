@@ -105,9 +105,12 @@ export interface TableColumnItem {
 }
 
 export enum ColumnTypes{
-    text,
-    date,
-    datetime,
-    email,
-    number,
+    text = "text",
+    date = "date",
+    datetime = "datetime",
+    email = "email",
+    number = "number",
+    checkbox = "checkbox",
+    file = "file",
+    radio = "radio"
 }

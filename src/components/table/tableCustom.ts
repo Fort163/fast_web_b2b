@@ -23,9 +23,12 @@ export default class TableCustom extends Vue{
     }
 
     public addItem() : void{
-        this.tableData?.push(new class implements TableData {
-            id = null;
-        })
+        const obj = new Object();
+        this.tableColumn?.forEach(item =>{
+            // @ts-ignore
+            obj[item.itemName.toString()] = null;
+        });
+        this.tableData?.push(<TableData>obj);
     }
 
 }

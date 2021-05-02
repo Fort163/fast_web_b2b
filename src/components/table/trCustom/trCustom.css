@@ -1,7 +1,7 @@
 .trMain{
     display: flex;
     width: 99%;
-    margin: 2px;
+    padding: 5px;
     min-height: 40px;
     max-height: 60px;
 }

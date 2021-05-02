@@ -1,15 +1,21 @@
-import {Component, Prop, Vue} from "vue-property-decorator";
-import {ColumnTypes, TableColumnItem} from "@/store/model";
+import {Component, Inject, Prop, Vue, Watch} from "vue-property-decorator";
+import {ColumnTypes, TableColumnItem, TableSettings} from "@/store/model";
 
 @Component({
 
 })
 export default class TdCustom extends Vue{
-    @Prop() dataItem: any | undefined;
+    @Inject('settings') settings: TableSettings | undefined;
+    @Prop() index: Number | undefined;
     @Prop() column: TableColumnItem | undefined;
     @Prop() isTitle: Boolean | undefined;
 
-    get value() : any|undefined{
+    get dataItem() : any{
+        // @ts-ignore
+        return this.settings?.data[this.index];
+    }
+
+    get value() : any{
         if(this.isTitle)
             return  this.column?.title;
         else {
@@ -46,6 +52,10 @@ export default class TdCustom extends Vue{
 
     get type() : ColumnTypes | undefined {
         return this.column?.itemType;
+    }
+
+    public setVal(val: any){
+        this.value = val;
     }
 
 }

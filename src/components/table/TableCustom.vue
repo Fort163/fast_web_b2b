@@ -1,9 +1,10 @@
 <template>
   <div class="mainTable">
-    <h1>Table</h1>
-    <TrCustom :columns="tableColumn" :key="'title'" :isTitle="true" />
+    <div :class="'columnTable'">
+      <TrCustom :columns="tableColumn" :key="'title'" :isTitle="true" />
+    </div>
     <transition-group :class="'dataTable'" name="dataAnimation" tag="div">
-      <TrCustom v-for="(item,index) in this.tableData" :key="index" :dataItem="item" :isTitle="false" :index="index"/>
+      <TrCustom v-for="(item,index) in this.tableData" :key="index" :isTitle="false" :index="index"/>
     </transition-group>
     <button v-if="tableColumn" :class="'tableAdd'" @click="addItem()"></button>
   </div>

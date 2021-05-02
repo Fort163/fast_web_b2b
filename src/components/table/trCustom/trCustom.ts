@@ -9,7 +9,6 @@ import TdCustom from "@/components/table/tdCustom/TdCustom.vue";
 })
 export default class TrCustom extends Vue{
     @Inject('settings') settings: TableSettings | undefined;
-    @Prop() dataItem: TableData | undefined;
     @Prop() isTitle: Boolean | undefined;
     @Prop() index: number | undefined;
 
@@ -39,7 +38,7 @@ export default class TrCustom extends Vue{
     }
 
     public deleteDefault(){
-        this.dataTable?.splice(this.index?this.index:-1,1);
+        this.dataTable?.splice(this.index!=undefined?this.index:-1,1);
     }
 
     public selectFunc(){

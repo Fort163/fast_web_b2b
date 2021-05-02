@@ -1,5 +1,5 @@
 import {Component, Inject, Prop, Vue} from "vue-property-decorator";
-import {TableColumnItem, TableData, TableSettings} from "@/store/model";
+import {Handler, TableColumnItem, TableData, TableSettings} from "@/store/model";
 import TdCustom from "@/components/table/tdCustom/TdCustom.vue";
 
 @Component({
@@ -20,7 +20,7 @@ export default class TrCustom extends Vue{
         return this.tableSettings?.columns;
     }
 
-    get deleteFunc(): Function | null  | undefined{
+    get deleteFunc(): Handler<undefined, undefined, void> | undefined{
         return this.tableSettings?.deleteFunc;
     }
 
@@ -43,7 +43,7 @@ export default class TrCustom extends Vue{
 
     public selectFunc(){
         if(this.deleteFunc){
-            this.deleteFunc();
+            this.deleteFunc?.function();
         }
         else {
             this.deleteDefault();

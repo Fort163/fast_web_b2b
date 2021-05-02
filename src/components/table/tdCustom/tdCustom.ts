@@ -1,4 +1,4 @@
-import {Component, Inject, Prop, Vue, Watch} from "vue-property-decorator";
+import {Component, Inject, Prop, Vue} from "vue-property-decorator";
 import {ColumnTypes, TableColumnItem, TableSettings} from "@/store/model";
 
 @Component({
@@ -9,6 +9,7 @@ export default class TdCustom extends Vue{
     @Prop() index: Number | undefined;
     @Prop() column: TableColumnItem | undefined;
     @Prop() isTitle: Boolean | undefined;
+    private isOk: boolean = true;
 
     get dataItem() : any{
         // @ts-ignore
@@ -35,12 +36,20 @@ export default class TdCustom extends Vue{
                 name = this.column.itemName;
             }
             const result = Object.prototype.hasOwnProperty.call(this.dataItem, name.toString());
+            this.checkValue(val);
             if(result)
                 this.dataItem[name.toString()] = val;
     }
 
+    get errorMessage() : String | undefined{
+        const errorMessage = this.column?.errorMessage;
+        if(errorMessage){
+            return errorMessage;
+        }
+        return 'Ошибка заполнения';
+    }
 
-    get width() : String | null | undefined{
+    get width() : String | undefined{
         const width = this.column?.width;
         if(width){
             return width;
@@ -54,8 +63,28 @@ export default class TdCustom extends Vue{
         return this.column?.itemType;
     }
 
-    public setVal(val: any){
-        this.value = val;
+    get check() :boolean{
+        return this.isOk;
+    }
+
+    get mandatory() : boolean | undefined{
+        return this.column?.mandatory;
+    }
+
+    public checkValue(val: any) : void{
+        if(this.column?.restriction){
+            this.isOk = this.column?.restriction.function(val);
+        }
+        else {
+            this.isOk = this.defaultCheckValue(val)
+        }
+    }
+
+    public defaultCheckValue(val: any): boolean {
+        if(this.type === ColumnTypes.checkbox || !this.mandatory){
+            return true;
+        }
+        return !!val;
     }
 
 }

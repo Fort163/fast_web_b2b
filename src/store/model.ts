@@ -76,7 +76,7 @@ export interface TableSettings {
     pagingSize : number | 10,
     defaultButtons : boolean | true,
     selectFunc : Function | null,
-    deleteFunc : Function | null
+    deleteFunc : Handler<undefined, undefined, void> | undefined
 }
 
 export abstract class DefaultTableSettings implements TableSettings{
@@ -84,15 +84,22 @@ export abstract class DefaultTableSettings implements TableSettings{
     paging = false;
     pagingSize = 10;
     selectFunc = null;
-    deleteFunc = null;
+    deleteFunc = undefined;
     abstract columns: TableColumnItem[];
     abstract data: any[];
 
 }
 
+export abstract class Handler<F,S,R> {
+    abstract function(val1?:F, val2?:S): R;
+}
+
 export abstract class DefaultTableColumnItem implements TableColumnItem{
     itemType : ColumnTypes = ColumnTypes.text;
-    width : String | null =  null;
+    width : String | undefined =  undefined;
+    restriction : Handler<any, undefined, boolean> | undefined = undefined;
+    errorMessage: String | undefined = undefined;
+    abstract mandatory : boolean;
     abstract itemName: String;
     abstract title: String;
 }
@@ -101,11 +108,15 @@ export interface TableColumnItem {
     title: String,
     itemName: String,
     itemType: ColumnTypes,
-    width: String | null
+    mandatory: boolean,
+    errorMessage: String | undefined,
+    restriction: Handler<any, undefined, boolean> | undefined,
+    width: String | undefined
 }
 
 export enum ColumnTypes{
     text = "text",
+    textarea = "textarea",
     date = "date",
     datetime = "datetime",
     email = "email",

@@ -1,8 +1,9 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import ComboBox from "@/components/comboBox/ComboBox.vue";
-import {ComboboxModel, Role, State, TopMenuModel} from "@/store/model";
+import {ComboboxModel, Role, State, TopMenuModel,Handler} from "@/store/model";
 import {getTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
+import {Store} from "vuex";
 
 @Component({
     components: {
@@ -10,8 +11,6 @@ import {getTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
     }
 })
 export default class TopMenu extends Vue {
-    private currentItem: ComboboxModel | undefined;
-    private currentMenu: string | undefined;
 
     get state():State{
         return this.$store.state
@@ -57,7 +56,19 @@ export default class TopMenu extends Vue {
     public item(): String | undefined{
         return this.state.currentMenuItem?.name;
     }
-    public setItem(item : ComboboxModel|undefined){
-        this.$store.commit('setCurrentMenuItem',item);
+
+    get handler(){
+        return new HandlerMenuItem(this.$store);
+    }
+}
+
+class HandlerMenuItem extends Handler<ComboboxModel,undefined,void>{
+    private store : Store<any>;
+    constructor(store : Store<any>) {
+        super();
+        this.store = store;
+    }
+    function(val1: ComboboxModel | undefined, val2: undefined): void {
+        this.store.commit('setCurrentMenuItem',val1);
     }
 }

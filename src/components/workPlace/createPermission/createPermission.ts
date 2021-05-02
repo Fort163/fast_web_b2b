@@ -3,7 +3,7 @@ import Vue from "vue";
 import {
     ColumnTypes,
     DefaultTableColumnItem,
-    DefaultTableSettings,
+    DefaultTableSettings, Handler,
     State,
     TableColumnItem,
     TableData
@@ -13,21 +13,32 @@ import TableCustom from "@/components/table/TableCustom.vue";
 class PermissionColumnItem extends DefaultTableColumnItem{
     itemName: String;
     title: String;
-    constructor(itemName : String,title : String) {
+    mandatory: boolean;
+    constructor(itemName : String,title : String,mandatory: boolean) {
         super();
         this.itemName = itemName;
         this.title = title;
+        this.mandatory = mandatory;
     }
 }
 
-const item1 = new PermissionColumnItem("id","ИД");
-const item2 = new PermissionColumnItem("name","ИМЯ");
-const item3 = new PermissionColumnItem("age","Возраст");
-const item4 = new PermissionColumnItem("work","Работа");
-const item5 = new PermissionColumnItem("bool","Логическое");
+const item1 = new PermissionColumnItem("id","ИД",true);
+const item2 = new PermissionColumnItem("name","ИМЯ",false);
+const item3 = new PermissionColumnItem("age","Возраст",true);
+const item4 = new PermissionColumnItem("work","Работа",true);
+const item5 = new PermissionColumnItem("bool","Логическое",true);
+item3.errorMessage = 'Возраст должен быть не более 50 лет'
+item3.restriction = new class extends Handler<any, undefined, boolean> {
+    function(val1: any): boolean {
+        const number = Number.parseFloat(val1.toString());
+        return number<50;
+    }
+}
 item1.width = '5%';
-item1.itemType = ColumnTypes.number
+item1.itemType = ColumnTypes.number;
+item3.itemType = ColumnTypes.number;
 item4.width = '20%';
+item4.itemType = ColumnTypes.textarea;
 item5.itemType = ColumnTypes.checkbox;
 
 const column : TableColumnItem[] = [item1,item2,item3,item4,item5];

@@ -1,7 +1,10 @@
 <template>
   <div :class="'mainRole'">
     <h1>Work Role</h1>
-    <TableCustom></TableCustom>
+    <div :style="{width:'100%',height:'60px'}">
+      <SelectBox :model="this.comboData"></SelectBox>
+    </div>
+
   </div>
 </template>
 

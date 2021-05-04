@@ -2,7 +2,8 @@ import {Component, Inject, Prop, Vue} from "vue-property-decorator";
 import {ColumnTypes, TableColumnItem, TableSettings} from "@/store/model";
 
 @Component({
-
+    components:{
+    }
 })
 export default class TdCustom extends Vue{
     @Inject('settings') settings: TableSettings | undefined;
@@ -25,8 +26,12 @@ export default class TdCustom extends Vue{
                 name = this.column.itemName;
             }
             const result = Object.prototype.hasOwnProperty.call(this.dataItem, name.toString());
-            if(result)
-                return this.dataItem[name.toString()];
+            let val = null;
+            if(result) {
+                val = this.dataItem[name.toString()];
+            }
+            this.checkValue(val);
+            return val;
         }
     }
 

@@ -58,6 +58,24 @@ export interface ComboboxModel{
     name: String
 }
 
+export interface SelectBoxModel{
+    item : Array<ComboboxModel>;
+    currentItem : Array<ComboboxModel>;
+}
+
+class Empty implements ComboboxModel{
+    id: Number = -1;
+    name: String = 'Empty';
+}
+
+export abstract class DefaultSelectBox implements SelectBoxModel{
+    item : Array<ComboboxModel>;
+    constructor(item : Array<ComboboxModel>) {
+        this.item = item
+    }
+    currentItem : Array<ComboboxModel> = new Array<ComboboxModel>(new Empty());
+}
+
 export interface TopMenuModel {
     admin: ComboboxModel[],
     company: ComboboxModel[],
@@ -99,6 +117,7 @@ export abstract class DefaultTableColumnItem implements TableColumnItem{
     width : String | undefined =  undefined;
     restriction : Handler<any, undefined, boolean> | undefined = undefined;
     errorMessage: String | undefined = undefined;
+    comboData: ComboboxModel[] | undefined = undefined;
     abstract mandatory : boolean;
     abstract itemName: String;
     abstract title: String;
@@ -111,7 +130,8 @@ export interface TableColumnItem {
     mandatory: boolean,
     errorMessage: String | undefined,
     restriction: Handler<any, undefined, boolean> | undefined,
-    width: String | undefined
+    width: String | undefined,
+    comboData: ComboboxModel[] | undefined,
 }
 
 export enum ColumnTypes{
@@ -123,5 +143,6 @@ export enum ColumnTypes{
     number = "number",
     checkbox = "checkbox",
     file = "file",
-    radio = "radio"
+    radio = "radio",
+    combo = "combobox"
 }

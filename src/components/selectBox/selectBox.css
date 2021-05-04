@@ -1,0 +1,46 @@
+.mainSelectBox{
+    width: 100%;
+    height: 100%;
+    border: 1px double #474646;
+    cursor: pointer;
+}
+
+.selectMenu{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.selectItems{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.selectItem{
+
+}
+
+.selectItemValue{
+
+}
+
+.selectItemButton{
+
+}
+
+.showStoreButton{
+    min-width: 10px;
+    max-width: 10px;
+    background-color: #aeb8c3;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.selectData{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}

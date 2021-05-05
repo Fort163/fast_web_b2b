@@ -1,8 +1,9 @@
 <template>
   <div :class="'mainPermission'">
-    <h1>Work Permission</h1>
     <TableCustom :tableSettings="this.settings"></TableCustom>
-
+    <div v-if="this.isShow">
+      <h6  v-for="(item,index) in this.settings.data" :key="index">{{item}}</h6>
+    </div>
   </div>
 </template>
 

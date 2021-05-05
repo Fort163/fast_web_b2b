@@ -96,6 +96,10 @@
 
 }
 
+.combo{
+    display: block;
+}
+
 .error{
     border: 3px groove #cd0e0e;
     border-top-style: none;

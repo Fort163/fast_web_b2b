@@ -6,7 +6,16 @@
     <transition-group :class="'dataTable'" name="dataAnimation" tag="div">
       <TrCustom v-for="(item,index) in this.tableData" :key="index" :isTitle="false" :index="index"/>
     </transition-group>
-    <button v-if="tableColumn" :class="'tableAdd'" @click="addItem()"></button>
+    <div v-if="tableColumn" :class="'buttonBar'">
+      <button :class="'tableAdd'" :title="'Добавить'" @click="addItem()"/>
+      <button :class="'tableSave'" :title="'Сохранить'" @click="save()"/>
+    </div>
+    <div v-if="showError" :class="'errorDown'">
+      <h3>Ошибка заполнения</h3>
+      <div :class="'errorValue'" v-for="(item,index) in this.errors" :key="index" >
+        {{item}}
+      </div>
+    </div>
   </div>
 </template>
 

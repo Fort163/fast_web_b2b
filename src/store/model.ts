@@ -63,17 +63,13 @@ export interface SelectBoxModel{
     currentItem : Array<ComboboxModel>;
 }
 
-class Empty implements ComboboxModel{
-    id: Number = -1;
-    name: String = 'Empty';
-}
 
 export abstract class DefaultSelectBox implements SelectBoxModel{
     item : Array<ComboboxModel>;
     constructor(item : Array<ComboboxModel>) {
         this.item = item
     }
-    currentItem : Array<ComboboxModel> = new Array<ComboboxModel>(new Empty());
+    currentItem : Array<ComboboxModel> = new Array<ComboboxModel>();
 }
 
 export interface TopMenuModel {
@@ -93,7 +89,8 @@ export interface TableSettings {
     paging : boolean | false,
     pagingSize : number | 10,
     defaultButtons : boolean | true,
-    selectFunc : Function | null,
+    saveFunc : Handler<undefined, undefined, void> | undefined,
+    selectFunc : Handler<any, undefined, void> | undefined,
     deleteFunc : Handler<undefined, undefined, void> | undefined
 }
 
@@ -101,10 +98,11 @@ export abstract class DefaultTableSettings implements TableSettings{
     defaultButtons = true;
     paging = false;
     pagingSize = 10;
-    selectFunc = null;
+    selectFunc = undefined;
     deleteFunc = undefined;
     abstract columns: TableColumnItem[];
     abstract data: any[];
+    abstract saveFunc: Handler<undefined, undefined, void> | undefined;
 
 }
 
@@ -117,7 +115,7 @@ export abstract class DefaultTableColumnItem implements TableColumnItem{
     width : String | undefined =  undefined;
     restriction : Handler<any, undefined, boolean> | undefined = undefined;
     errorMessage: String | undefined = undefined;
-    comboData: ComboboxModel[] | undefined = undefined;
+    comboData: SelectBoxModel | undefined = undefined;
     abstract mandatory : boolean;
     abstract itemName: String;
     abstract title: String;
@@ -131,7 +129,7 @@ export interface TableColumnItem {
     errorMessage: String | undefined,
     restriction: Handler<any, undefined, boolean> | undefined,
     width: String | undefined,
-    comboData: ComboboxModel[] | undefined,
+    comboData: SelectBoxModel | undefined,
 }
 
 export enum ColumnTypes{

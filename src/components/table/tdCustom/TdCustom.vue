@@ -2,7 +2,7 @@
   <div :class="'tdMain'" :style="{width:this.width}">
     <div v-if="this.isTitle" :class="'tdTitle'">{{this.value}}</div>
     <div v-else :class="'tdData'">
-      <input v-if="type.toString()==='text'" :class="[this.isOk ? '' : 'error','tdAll date']" v-model="value" :title="isOk?'':errorMessage"/>
+      <input v-if="type.toString()==='text'" :class="[this.isOk ? '' : 'error','tdAll']" v-model="value" :title="isOk?'':errorMessage"/>
       <textarea v-if="type.toString()==='textarea'" :class="[this.isOk ? '' : 'error','tdAll text']" v-model="value" :title="isOk?'':errorMessage"/>
       <input v-if="type.toString()==='date'" :class="[this.isOk ? '' : 'error','tdAll date']" type="date" v-model="value" :title="isOk?'':errorMessage"/>
       <input v-if="type.toString()==='datetime'" :class="[this.isOk ? '' : 'error','tdAll datetime']" type="datetime" v-model="value" :title="isOk?'':errorMessage"/>
@@ -12,6 +12,7 @@
         <div :class="[this.value ? 'check' : 'uncheck']"/>
       </div>
       <input v-if="type.toString()==='radio'" :class="[this.isOk ? '' : 'error','tdAll radio']" type="radio" v-model="value" :title="isOk?'':errorMessage"/>
+      <SelectBox v-if="type.toString()==='combobox'" :model="this.comboData" :value="value"  :class="[this.isOk ? '' : 'error','tdAll combo']" v-model="value" :title="isOk?'':errorMessage"/>
       <!--TODO-->
       <!--<input v-if="type.toString()==='file'" type="file" v-model="this.value">-->
 

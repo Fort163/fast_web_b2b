@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import {
-    ColumnTypes, ComboboxModel,
+    ColumnTypes, ComboboxModel, DefaultSelectBox,
     DefaultTableColumnItem,
     DefaultTableSettings,
     Handler,
@@ -49,7 +49,7 @@ item4.width = '20%';
 item4.itemType = ColumnTypes.textarea;
 item5.itemType = ColumnTypes.checkbox;
 item6.itemType = ColumnTypes.combo;
-item6.comboData = [
+const dataCombo = [
     new class implements ComboboxModel {
         id: Number = 1;
         name : String = "item 1"
@@ -69,23 +69,71 @@ item6.comboData = [
     new class implements ComboboxModel {
         id: Number = 5;
         name : String = "item 5"
-    },
+    }
 ]
 
+class RoleSelect extends DefaultSelectBox{
+    constructor(item : Array<ComboboxModel>) {
+        super(item);
+    }
+}
+item6.comboData = new RoleSelect(dataCombo);
+item6.width = '30%';
+item6.restriction = new class extends Handler<any, undefined, boolean> {
+    function(val1: any): boolean {
+        if(val1) {
+            const value : Array<ComboboxModel> = <Array<ComboboxModel>>val1;
+            const valueId = new Array<Number>();
+            value.forEach(itemValue =>{
+                valueId.push(itemValue.id);
+            })
 
-const column : TableColumnItem[] = [item1,item2,item3,item4,item5];
-const data = [{id:1,name:'Nik',age:40,work:'Builder ваыва ыв выаываыв аываываыва ываываываываыв аыв',bool:true},
-    {id:2,name:'Ted',age:40,work:'Builder',bool:false},
-    {id:3,name:'Bill',age:40,work:'Builder',bool:true},
-    {id:4,name:'Jone',age:40,work:'Builder',bool:false}];
+            return value.length > 2 && valueId.indexOf(3) > -1;
+        }
+        else{
+            return false;
+        }
+    }
+}
+item6.errorMessage = 'Должно быть выбрано не меньше трех элементов и один из них Item 3'
+
+const column : TableColumnItem[] = [item1,item2,item3,item4,item5,item6];
+const data = [{id:1,name:'Nik',age:40,work:'Builder ваыва ыв выаываыв аываываыва ываываываываыв аыв',bool:true,combo:new Array<ComboboxModel>()},
+    {id:2,name:'Ted',age:40,work:'Builder',bool:false,combo:new Array<ComboboxModel>(new class implements ComboboxModel {
+                id: Number = 3;
+                name : String = "item 3"
+            },
+            new class implements ComboboxModel {
+                id: Number = 4;
+                name : String = "item 4"
+            },)},
+    {id:3,name:'Bill',age:40,work:'Builder',bool:true,combo:new Array<ComboboxModel>()},
+    {id:4,name:'Jone',age:40,work:'Builder',bool:false,combo:new Array<ComboboxModel>()}];
+
+class PermissionSave extends Handler<undefined, undefined, void>{
+    private show : boolean = false
+    constructor() {
+        super();
+    }
+    function(): void {
+        this.show = true;
+        alert('Сохранено!');
+    }
+
+    get isShow(): boolean{
+        return this.show;
+    }
+}
 
 class PermissionTable extends DefaultTableSettings{
     columns: TableColumnItem[];
     data: TableData[];
-    constructor(columns: TableColumnItem[],data: any[]) {
+    saveFunc : Handler<undefined, undefined, void>;
+    constructor(columns: TableColumnItem[],data: any[],save: Handler<undefined, undefined, void> ) {
         super();
         this.columns = columns;
         this.data = data;
+        this.saveFunc = save;
     }
 }
 
@@ -95,13 +143,19 @@ class PermissionTable extends DefaultTableSettings{
     }
 })
 export default class CreatePermission extends Vue {
-    
+
+    private saveHandler : PermissionSave = new PermissionSave();
+
     get state():State{
         return this.$store.state
     }
 
     get settings(){
-        return new PermissionTable(column,data);
+        return new PermissionTable(column,data,this.saveHandler);
+    }
+
+    get isShow() : boolean{
+        return this.saveHandler.isShow;
     }
 
 }

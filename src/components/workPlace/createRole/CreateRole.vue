@@ -2,7 +2,7 @@
   <div :class="'mainRole'">
     <h1>Work Role</h1>
     <div :style="{width:'100%',height:'60px'}">
-      <SelectBox :model="this.comboData"></SelectBox>
+      <SelectBox :model="this.comboData"/>
     </div>
 
   </div>

@@ -1,8 +1,10 @@
 import {Component, Inject, Prop, Vue} from "vue-property-decorator";
-import {ColumnTypes, TableColumnItem, TableSettings} from "@/store/model";
+import {ColumnTypes, SelectBoxModel, TableColumnItem, TableSettings} from "@/store/model";
+import SelectBox from "@/components/selectBox/SelectBox.vue";
 
 @Component({
     components:{
+        SelectBox
     }
 })
 export default class TdCustom extends Vue{
@@ -22,11 +24,12 @@ export default class TdCustom extends Vue{
             return  this.column?.title;
         else {
             let name : String = '';
+            let val = null;
             if(this.column){
                 name = this.column.itemName;
             }
             const result = Object.prototype.hasOwnProperty.call(this.dataItem, name.toString());
-            let val = null;
+
             if(result) {
                 val = this.dataItem[name.toString()];
             }
@@ -76,6 +79,10 @@ export default class TdCustom extends Vue{
         return this.column?.mandatory;
     }
 
+    get comboData() : SelectBoxModel | undefined{
+        return this.column?.comboData;
+    }
+
     public checkValue(val: any) : void{
         if(this.column?.restriction){
             this.isOk = this.column?.restriction.function(val);
@@ -88,6 +95,9 @@ export default class TdCustom extends Vue{
     public defaultCheckValue(val: any): boolean {
         if(this.type === ColumnTypes.checkbox || !this.mandatory){
             return true;
+        }
+        if(this.type===ColumnTypes.combo){
+            return val.length>0;
         }
         return !!val;
     }

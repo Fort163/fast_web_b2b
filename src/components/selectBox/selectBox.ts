@@ -8,14 +8,14 @@ import {ComboboxModel, SelectBoxModel, TableSettings} from "@/store/model";
     }
 })
 export default class SelectBox extends Vue {
-    @Prop() model: SelectBoxModel | undefined;
+    @Prop() model: Array<ComboboxModel> | undefined;
     @Prop() value: Array<ComboboxModel>| undefined;
     private storeRepository: Array<ComboboxModel> = new Array<ComboboxModel>();
     private storeItem: Array<ComboboxModel> = new Array<ComboboxModel>();
     private show : boolean = false;
 
-    get comboModel():SelectBoxModel | undefined{
-        return <SelectBoxModel>this.model;
+    get comboModel() : Array<ComboboxModel> | undefined{
+        return <Array<ComboboxModel>>this.model;
     }
 
     mounted() {
@@ -25,7 +25,7 @@ export default class SelectBox extends Vue {
                 valueId.push(itemValue.id);
             })
         }
-        this.comboModel?.item?.forEach(item=>{
+        this.comboModel?.forEach(item=>{
             if(valueId.indexOf(item.id)===-1){
                 this.storeRepository.push(item);
             }
@@ -105,6 +105,7 @@ export default class SelectBox extends Vue {
     public deleteCurrentItems(value:number){
         const slice = <ComboboxModel>this.value?.splice(value,1).pop();
         this.storeItems?.push(slice);
+        this.show = true;
     }
 
 }

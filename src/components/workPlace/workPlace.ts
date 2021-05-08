@@ -3,11 +3,13 @@ import Vue from "vue";
 import {State} from "@/store/model";
 import CreateRole from "@/components/workPlace/createRole/CreateRole.vue";
 import CreatePermission from "@/components/workPlace/createPermission/CreatePermission.vue";
+import CreateCompany from "@/components/workPlace/createCompany/CreateCompany.vue";
 
 @Component({
     components: {
         CreateRole,
-        CreatePermission
+        CreatePermission,
+        CreateCompany
     }
 })
 export default class WorkPlace extends Vue {
@@ -16,6 +18,6 @@ export default class WorkPlace extends Vue {
     }
 
     get currentFrame() : String | undefined{
-        return this.state.currentMenuItem?.name;
+        return this.state.currentMenuItem?.permission;
     }
 }

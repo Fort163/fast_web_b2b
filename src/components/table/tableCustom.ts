@@ -58,6 +58,7 @@ export default class TableCustom extends Vue{
 
     public checkValue() : void{
         this.errorMap = new Map<String,String>();
+        this.isError = false;
         this.$children.forEach(elem =>{
             if(elem.$el.className==="dataTable") {
                 elem.$children.forEach(tr =>{

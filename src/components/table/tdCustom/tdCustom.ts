@@ -1,5 +1,5 @@
 import {Component, Inject, Prop, Vue} from "vue-property-decorator";
-import {ColumnTypes, SelectBoxModel, TableColumnItem, TableSettings} from "@/store/model";
+import {ColumnTypes, ComboboxModel, SelectBoxModel, TableColumnItem, TableSettings} from "@/store/model";
 import SelectBox from "@/components/selectBox/SelectBox.vue";
 
 @Component({
@@ -34,6 +34,11 @@ export default class TdCustom extends Vue{
                 val = this.dataItem[name.toString()];
             }
             this.checkValue(val);
+            if(this.type===ColumnTypes.checkbox){
+                if(val === null){
+                    this.dataItem[name.toString()] = !!val;
+                }
+            }
             return val;
         }
     }
@@ -79,7 +84,7 @@ export default class TdCustom extends Vue{
         return this.column?.mandatory;
     }
 
-    get comboData() : SelectBoxModel | undefined{
+    get comboData() : Array<ComboboxModel> | undefined{
         return this.column?.comboData;
     }
 

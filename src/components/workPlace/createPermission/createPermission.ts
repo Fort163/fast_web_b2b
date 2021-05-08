@@ -1,84 +1,33 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import {
-    ColumnTypes, ComboboxModel, DefaultSelectBox,
+    ColumnTypes,
     DefaultTableColumnItem,
     DefaultTableSettings,
-    Handler,
+    Handler, ModalWindow,
+    PermissionModel,
     State,
     TableColumnItem,
-    TableData
+    TableData, TableSettings
 } from "@/store/model";
 import TableCustom from "@/components/table/TableCustom.vue";
+import {Inject, Provide} from "vue-property-decorator";
+import {FastWebApi} from "@/components/api/fastWebApi";
+import InfoWindow from "@/components/modal/infoWindow/InfoWindow.vue";
+import {Store} from "vuex";
 
-class PermissionColumnItem extends DefaultTableColumnItem{
-    itemName: String;
-    title: String;
-    mandatory: boolean;
-    constructor(itemName : String,title : String,mandatory: boolean) {
-        super();
-        this.itemName = itemName;
-        this.title = title;
-        this.mandatory = mandatory;
-    }
-}
-
-const item1 = new PermissionColumnItem("id","ИД",true);
-const item2 = new PermissionColumnItem("name","ИМЯ",true);
-const item3 = new PermissionColumnItem("age","Возраст",true);
-const item4 = new PermissionColumnItem("work","Работа",false);
-const item5 = new PermissionColumnItem("bool","Логическое",false);
-const item6 = new PermissionColumnItem('combo','ComboBox',true);
-item1.width = '5%';
-item1.itemType = ColumnTypes.number;
-item2.errorMessage = "Необходимо указать имя"
-item3.itemType = ColumnTypes.number;
-item3.errorMessage = 'Возраст должен быть указан в диапазоне от 18 до 50 лет'
+/*item3.errorMessage = 'Возраст должен быть указан в диапазоне от 18 до 60 лет'
 item3.restriction = new class extends Handler<any, undefined, boolean> {
     function(val1: any): boolean {
         if(val1) {
             const number = Number.parseFloat(val1.toString());
-            return number > 18 && number < 50;
+            return number >= 18 && number < 60;
         }
         else{
             return false;
         }
     }
 }
-item4.width = '20%';
-item4.itemType = ColumnTypes.textarea;
-item5.itemType = ColumnTypes.checkbox;
-item6.itemType = ColumnTypes.combo;
-const dataCombo = [
-    new class implements ComboboxModel {
-        id: Number = 1;
-        name : String = "item 1"
-    },
-    new class implements ComboboxModel {
-        id: Number = 2;
-        name : String = "item 2"
-    },
-    new class implements ComboboxModel {
-        id: Number = 3;
-        name : String = "item 3"
-    },
-    new class implements ComboboxModel {
-        id: Number = 4;
-        name : String = "item 4"
-    },
-    new class implements ComboboxModel {
-        id: Number = 5;
-        name : String = "item 5"
-    }
-]
-
-class RoleSelect extends DefaultSelectBox{
-    constructor(item : Array<ComboboxModel>) {
-        super(item);
-    }
-}
-item6.comboData = new RoleSelect(dataCombo);
-item6.width = '30%';
 item6.restriction = new class extends Handler<any, undefined, boolean> {
     function(val1: any): boolean {
         if(val1) {
@@ -88,40 +37,25 @@ item6.restriction = new class extends Handler<any, undefined, boolean> {
                 valueId.push(itemValue.id);
             })
 
-            return value.length > 2 && valueId.indexOf(3) > -1;
+            return value.length > 2 && valueId.indexOf(2) > -1;
         }
         else{
             return false;
         }
     }
-}
-item6.errorMessage = 'Должно быть выбрано не меньше трех элементов и один из них Item 3'
+}*/
 
-const column : TableColumnItem[] = [item1,item2,item3,item4,item5,item6];
-const data = [{id:1,name:'Nik',age:40,work:'Builder ваыва ыв выаываыв аываываыва ываываываываыв аыв',bool:true,combo:new Array<ComboboxModel>()},
-    {id:2,name:'Ted',age:40,work:'Builder',bool:false,combo:new Array<ComboboxModel>(new class implements ComboboxModel {
-                id: Number = 3;
-                name : String = "item 3"
-            },
-            new class implements ComboboxModel {
-                id: Number = 4;
-                name : String = "item 4"
-            },)},
-    {id:3,name:'Bill',age:40,work:'Builder',bool:true,combo:new Array<ComboboxModel>()},
-    {id:4,name:'Jone',age:40,work:'Builder',bool:false,combo:new Array<ComboboxModel>()}];
-
-class PermissionSave extends Handler<undefined, undefined, void>{
-    private show : boolean = false
-    constructor() {
+class PermissionColumnItem extends DefaultTableColumnItem{
+    itemName: String;
+    title: String;
+    mandatory: boolean;
+    constructor(itemName : String,title : String,mandatory: boolean,type : ColumnTypes,width : String) {
         super();
-    }
-    function(): void {
-        this.show = true;
-        alert('Сохранено!');
-    }
-
-    get isShow(): boolean{
-        return this.show;
+        this.itemName = itemName;
+        this.title = title;
+        this.mandatory = mandatory;
+        super.itemType = type;
+        super.width = width;
     }
 }
 
@@ -134,6 +68,36 @@ class PermissionTable extends DefaultTableSettings{
         this.columns = columns;
         this.data = data;
         this.saveFunc = save;
+        super.defaultButtons = false;
+    }
+}
+
+class PermissionSave extends Handler<undefined, undefined, void>{
+    private api: FastWebApi;
+    private settings : TableSettings;
+    private store : Store<any>;
+    constructor(api: FastWebApi,settings : TableSettings,store : Store<any>) {
+        super();
+        this.api = api;
+        this.settings = settings;
+        this.store = store;
+    }
+    function(): void {
+        const result : Promise<boolean> = this.api.postApi<boolean>("/admin/create/permission",this.settings.data);
+        result.then(res =>{
+            if(res) {
+                this.store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Разрешения успешно сохранены';
+                    show : boolean = true;
+                });
+            }
+            else{
+                this.store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Произошла ошибка';
+                    show : boolean = true;
+                });
+            }
+        })
     }
 }
 
@@ -143,21 +107,51 @@ class PermissionTable extends DefaultTableSettings{
     }
 })
 export default class CreatePermission extends Vue {
+    @Inject('api') api: FastWebApi | undefined;
+    @Inject('state') state: State | undefined;
 
-    private saveHandler : PermissionSave = new PermissionSave();
+    private permissionData : Array<PermissionModel> = new Array<PermissionModel>();
+    private columns : Array<TableColumnItem> = new Array<TableColumnItem>();
+    // @ts-ignore
+    private saveHandler : PermissionSave = new PermissionSave(this.api,this.settings,this.$store);
 
-    get state():State{
-        return this.$store.state
+    mounted(){
+        this.initColumn();
+        const permissions : Promise<Array<PermissionModel>> = <Promise<Array<PermissionModel>>>this.api?.getApi<Array<PermissionModel>>("/admin/get/permission");
+        permissions.then((items:Array<PermissionModel>)=> {
+            items.forEach(item =>{
+                this.permissionData.push(item);
+            })
+        });
     }
 
-    get settings(){
-        return new PermissionTable(column,data,this.saveHandler);
+    get settings() : TableSettings{
+        return new PermissionTable(this.columns,this.permissionData,this.saveHandler);
     }
 
-    get isShow() : boolean{
-        return this.saveHandler.isShow;
+    private initColumn() : void{
+        const permission = new PermissionColumnItem("permission","Разрешение",true,ColumnTypes.text,'20%' );
+        const displayName = new PermissionColumnItem("displayName","Название на экране",false,ColumnTypes.text,'20%');
+        const admin = new PermissionColumnItem("admin","Администрирование",false,ColumnTypes.checkbox,'12%');
+        const company = new PermissionColumnItem("company","Моя компания",false,ColumnTypes.checkbox,'12%');
+        const service = new PermissionColumnItem("service","Мои заказы",false,ColumnTypes.checkbox,'12%');
+        const other = new PermissionColumnItem('other','Разное',false,ColumnTypes.checkbox,'12%');
+        permission.restriction = new class extends Handler<any, undefined, boolean> {
+            function(val: any): boolean {
+                const value = <String>val;
+                if(!value || value.length === 0){
+                    return false;
+                }
+                if(value.indexOf("ROLE_")===-1) {
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        }
+        permission.errorMessage = 'Разрешение не должно быть пустым и должно начинаться с "ROLE_"'
+        this.columns.push(permission,displayName,admin,company,service,other);
     }
 
 }
-
-

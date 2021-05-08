@@ -20,7 +20,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    min-height: 10%;
+    min-height: 250px;
     max-height: 100%;
 }
 

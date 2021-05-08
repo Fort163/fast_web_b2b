@@ -1,5 +1,6 @@
 import Vuex, {Store} from "vuex";
-import {ComboboxModel, LoginInfoModel, State, UserInfoModel} from "@/store/model";
+import {ComboboxModel, LoginInfoModel, MapInfo, ModalWindow, State, UserInfoModel} from "@/store/model";
+import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
 
 function emptytLoginInfoModel() : LoginInfoModel{
     return {
@@ -8,12 +9,28 @@ function emptytLoginInfoModel() : LoginInfoModel{
     }
 }
 
+function defaultMapInfo() : MapInfo{
+    return {
+        settings : {
+            apiKey: 'e8f7c134-5dcd-4af9-be0d-f53bce9e8a0a',
+            lang: 'ru_RU',
+            coordorder: 'latlong',
+            version: '2.1'
+        },
+        coords : null
+    }
+}
+
 class AppState implements State{
     loginModel: LoginInfoModel;
-    currentMenuItem : ComboboxModel | null;
+    mapInfo : MapInfo;
+    currentMenuItem : ComboboxTopMenu | null;
+    modalWindow : ModalWindow | null;
     constructor() {
         this.loginModel = emptytLoginInfoModel();
         this.currentMenuItem = null;
+        this.modalWindow = null;
+        this.mapInfo = defaultMapInfo();
     }
 }
 
@@ -29,9 +46,17 @@ export function createStore() : Store<State>{
                 state.loginModel.currentUser = value;
                 console.log("Set currentUser")
             },
-            setCurrentMenuItem (state : State,value : ComboboxModel) {
+            setCurrentMenuItem (state : State,value : ComboboxTopMenu) {
                 state.currentMenuItem = value;
                 console.log("Set currentMenuItem : "+value.name )
+            },
+            setModalWindow (state : State,value : ModalWindow) {
+                state.modalWindow = value;
+                console.log("Modal window : " + value.show)
+            },
+            setCoords(state : State,value : GeolocationCoordinates){
+                state.mapInfo.coords = value;
+                console.log("Set position")
             }
         }
     });

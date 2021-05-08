@@ -1,8 +1,8 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import ComboBox from "@/components/comboBox/ComboBox.vue";
-import {ComboboxModel, Role, State, TopMenuModel,Handler} from "@/store/model";
-import {getTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
+import {ComboboxModel, Role, State,Handler} from "@/store/model";
+import {getTopMenu, TopMenuModel} from "@/components/topMenu/topMenu/topMenuMapHelper";
 import {Store} from "vuex";
 
 @Component({

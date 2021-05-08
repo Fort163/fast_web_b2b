@@ -1,19 +1,28 @@
-import {ComboboxModel, PermissionModel, Role,  TopMenuModel} from "@/store/model";
+import {ComboboxModel, PermissionModel, Role } from "@/store/model";
 
-class ComboboxTopMenu implements ComboboxModel{
+export interface TopMenuModel {
+    admin: ComboboxTopMenu[],
+    company: ComboboxTopMenu[],
+    service: ComboboxTopMenu[],
+    other: ComboboxTopMenu[]
+}
+
+export class ComboboxTopMenu implements ComboboxModel{
     id: Number;
     name: String;
+    permission: String;
     constructor(item:PermissionModel) {
         this.id = item.id;
         this.name = item.displayName;
+        this.permission = item.permission;
     }
 }
 
 class TopMenuClass implements TopMenuModel{
-    admin: ComboboxModel[] = [];
-    company: ComboboxModel[] = [];
-    other: ComboboxModel[] = [];
-    service: ComboboxModel[] = [];
+    admin: ComboboxTopMenu[] = [];
+    company: ComboboxTopMenu[] = [];
+    other: ComboboxTopMenu[] = [];
+    service: ComboboxTopMenu[] = [];
     constructor(items: PermissionModel[]) {
         items.forEach(item =>{
             if(item.admin){
@@ -32,14 +41,14 @@ class TopMenuClass implements TopMenuModel{
     }
 }
 
-export function getTopMenu(roles : Role[] | undefined): TopMenuModel|null{
+export function getTopMenu(roles : Array<Role> | undefined): TopMenuModel|null{
     if(!roles){
         return null;
     }
-    const listItems:PermissionModel[] = [];
+    const listItems: Array<PermissionModel> = new Array<PermissionModel>();
     roles.forEach(role => {
-        role.permissionList.forEach(permission=>{
-            listItems.push(permission)
+        role.permissionList.forEach((permission:PermissionModel | ComboboxModel)=>{
+            listItems.push(<PermissionModel>permission)
         });
     });
     return new TopMenuClass(listItems);

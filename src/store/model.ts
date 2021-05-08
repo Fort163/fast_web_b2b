@@ -1,12 +1,20 @@
+import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
+
 export interface State{
     loginModel : LoginInfoModel,
-    currentMenuItem: ComboboxModel | null
-
+    mapInfo : MapInfo,
+    currentMenuItem: ComboboxTopMenu | null,
+    modalWindow : ModalWindow | null
 }
 
 export interface LoginInfoModel{
     accessToken: string | null,
     currentUser: UserInfoModel | null
+}
+
+export interface ModalWindow{
+    message: string | null,
+    show: boolean
 }
 
 export interface UserInfoModel{
@@ -25,13 +33,13 @@ export interface UserInfoModel{
     verified: Boolean,
     status: String,
     provider: String,
-    roleList: Role[]
+    roleList: Array<Role>
 }
 
 export interface Role{
     id: Number,
     name: String,
-    permissionList: PermissionModel[]
+    permissionList: Array<PermissionModel> | Array<ComboboxModel>
 }
 
 export interface PermissionModel{
@@ -42,6 +50,18 @@ export interface PermissionModel{
     company:boolean,
     service:boolean,
     other:boolean
+}
+
+export interface MapInfo{
+    settings : MapSettings,
+    coords : GeolocationCoordinates | null
+}
+
+export interface MapSettings{
+    apiKey: string,
+    lang: string,
+    coordorder: string,
+    version: string
 }
 
 export interface DateModel{
@@ -72,13 +92,6 @@ export abstract class DefaultSelectBox implements SelectBoxModel{
     currentItem : Array<ComboboxModel> = new Array<ComboboxModel>();
 }
 
-export interface TopMenuModel {
-    admin: ComboboxModel[],
-    company: ComboboxModel[],
-    service: ComboboxModel[],
-    other: ComboboxModel[]
-}
-
 export interface TableData extends Object{
     id: Number | null;
 }
@@ -101,7 +114,7 @@ export abstract class DefaultTableSettings implements TableSettings{
     selectFunc = undefined;
     deleteFunc = undefined;
     abstract columns: TableColumnItem[];
-    abstract data: any[];
+    abstract data: Array<any>;
     abstract saveFunc: Handler<undefined, undefined, void> | undefined;
 
 }
@@ -115,7 +128,7 @@ export abstract class DefaultTableColumnItem implements TableColumnItem{
     width : String | undefined =  undefined;
     restriction : Handler<any, undefined, boolean> | undefined = undefined;
     errorMessage: String | undefined = undefined;
-    comboData: SelectBoxModel | undefined = undefined;
+    comboData: Array<ComboboxModel> | undefined = undefined;
     abstract mandatory : boolean;
     abstract itemName: String;
     abstract title: String;
@@ -129,7 +142,7 @@ export interface TableColumnItem {
     errorMessage: String | undefined,
     restriction: Handler<any, undefined, boolean> | undefined,
     width: String | undefined,
-    comboData: SelectBoxModel | undefined,
+    comboData: Array<ComboboxModel> | undefined,
 }
 
 export enum ColumnTypes{

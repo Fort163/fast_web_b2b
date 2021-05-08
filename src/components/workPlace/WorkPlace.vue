@@ -1,8 +1,9 @@
 <template>
   <div class="work-place">
     <transition name="placer" mode="out-in">
-      <CreatePermission v-if="this.currentFrame==='Создать/изменить разрешения'" :key="'createPermission'"></CreatePermission>
-      <CreateRole v-if="this.currentFrame==='Создать/изменить роль'" :key="'createRole'"></CreateRole>
+      <CreatePermission v-if="this.currentFrame==='ROLE_CREATE_PERMISSION'" :key="'createPermission'"></CreatePermission>
+      <CreateRole v-if="this.currentFrame==='ROLE_CREATE_ROLE'" :key="'createRole'"></CreateRole>
+      <CreateCompany v-if="this.currentFrame==='ROLE_CREATE_COMPANY'" :key="'createRole'"></CreateCompany>
     </transition>
   </div>
 </template>

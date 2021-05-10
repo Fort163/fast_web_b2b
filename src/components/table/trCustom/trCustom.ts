@@ -24,8 +24,8 @@ export default class TrCustom extends Vue{
         return this.tableSettings?.deleteFunc;
     }
 
-    get defaultButtons(): Boolean | undefined{
-        return this.tableSettings?.defaultButtons;
+    get deleteButton(): Boolean | undefined{
+        return this.tableSettings?.deleteButton;
     }
 
     get dataTable(): TableData[] | undefined{

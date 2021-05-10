@@ -33,6 +33,14 @@ export default class TableCustom extends Vue{
         return Array.from(this.errorMap.values());
     }
 
+    get addButton() : boolean| undefined{
+        return this.settings?.addButton;
+    }
+
+    get saveButton() : boolean| undefined{
+        return this.settings?.saveButton;
+    }
+
     public addItem() : void{
         const obj = new Object();
         this.tableColumn?.forEach(item =>{

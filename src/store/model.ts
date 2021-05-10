@@ -1,15 +1,25 @@
 import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
+import {GeocoderResult} from "@/structure/map/ymapsModel";
 
 export interface State{
     loginModel : LoginInfoModel,
     mapInfo : MapInfo,
     currentMenuItem: ComboboxTopMenu | null,
-    modalWindow : ModalWindow | null
+    mask : MaskModel
 }
 
 export interface LoginInfoModel{
     accessToken: string | null,
     currentUser: UserInfoModel | null
+}
+
+export interface MaskModel {
+    modalWindow : ModalWindow | null
+    loadMask : LoadMask | null
+}
+
+export interface LoadMask{
+    show: boolean
 }
 
 export interface ModalWindow{
@@ -99,16 +109,20 @@ export interface TableData extends Object{
 export interface TableSettings {
     columns: TableColumnItem[],
     data: TableData[],
-    paging : boolean | false,
-    pagingSize : number | 10,
-    defaultButtons : boolean | true,
+    paging : boolean,
+    pagingSize : number,
+    deleteButton : boolean,
+    saveButton : boolean,
+    addButton : boolean,
     saveFunc : Handler<undefined, undefined, void> | undefined,
     selectFunc : Handler<any, undefined, void> | undefined,
     deleteFunc : Handler<undefined, undefined, void> | undefined
 }
 
 export abstract class DefaultTableSettings implements TableSettings{
-    defaultButtons = true;
+    deleteButton = true;
+    saveButton = true;
+    addButton = true;
     paging = false;
     pagingSize = 10;
     selectFunc = undefined;
@@ -126,7 +140,7 @@ export abstract class Handler<F,S,R> {
 export abstract class DefaultTableColumnItem implements TableColumnItem{
     itemType : ColumnTypes = ColumnTypes.text;
     width : String | undefined =  undefined;
-    restriction : Handler<any, undefined, boolean> | undefined = undefined;
+    restriction : Handler<any, TableData, boolean> | undefined = undefined;
     errorMessage: String | undefined = undefined;
     comboData: Array<ComboboxModel> | undefined = undefined;
     abstract mandatory : boolean;
@@ -140,16 +154,42 @@ export interface TableColumnItem {
     itemType: ColumnTypes,
     mandatory: boolean,
     errorMessage: String | undefined,
-    restriction: Handler<any, undefined, boolean> | undefined,
+    restriction: Handler<any, TableData, boolean> | undefined,
     width: String | undefined,
     comboData: Array<ComboboxModel> | undefined,
 }
 
+export interface ScheduleModel extends TableData{
+    dayOfWeek : string,
+    clockFrom : string,
+    clockTo : string,
+    work : boolean
+}
+
+export class DefaultSchedule implements ScheduleModel{
+    id = null
+    clockFrom : string = '00:00';
+    clockTo : string = '00:00';
+    work : boolean = false;
+    dayOfWeek: string;
+    constructor(dayOfWeek: DayOfWeek) {
+        this.dayOfWeek = dayOfWeek.toString();
+    }
+}
+
+export interface CompanyModel {
+    name : string | null
+    activityList : Array<ComboboxModel> | null
+    schedulesList : Array<ScheduleModel> | null
+    geoPosition : GeocoderResult | null
+}
+
 export enum ColumnTypes{
+    noEditable = "noEditable",
     text = "text",
     textarea = "textarea",
     date = "date",
-    datetime = "datetime",
+    time = "time",
     email = "email",
     number = "number",
     checkbox = "checkbox",
@@ -157,3 +197,14 @@ export enum ColumnTypes{
     radio = "radio",
     combo = "combobox"
 }
+
+export enum DayOfWeek{
+    monday = "Понедельник",
+    tuesday = "Вторник",
+    wednesday = "Среда",
+    thursday = "Четверг",
+    friday = "Пятница",
+    saturday = "Суббота",
+    sunday = "Воскресенье"
+}
+

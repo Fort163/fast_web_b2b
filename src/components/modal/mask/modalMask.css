@@ -16,11 +16,23 @@
     width: 25%;
     height: 15%;
     min-height: 100px;
+    max-height: 20%;
+    min-width: 250px;
+    max-width: 35%;
     background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.modalValue{
+    width: 100%;
+    height: calc(100% - 32px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
 .okButton{
@@ -37,4 +49,28 @@
     background-color: #92fcb5;
     border-radius: 20px;
     box-shadow: 0 0 30px #58ff96;
+}
+
+.cloud{
+    min-width: 128px;
+    max-width: 128px;
+    min-height: 128px;
+    max-height: 128px;
+    background-color: inherit;
+    border: none;
+    background-image: url(../../../assets/modal/load.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.animation{
+    animation: cloud 3.0s infinite ;
+}
+@keyframes cloud {
+    50% {
+        transform: translateY(-150%)
+    }
+    50% {
+        transform: translateY(150%)
+    }
 }

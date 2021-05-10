@@ -1,5 +1,5 @@
 import Vuex, {Store} from "vuex";
-import {ComboboxModel, LoginInfoModel, MapInfo, ModalWindow, State, UserInfoModel} from "@/store/model";
+import {LoadMask, LoginInfoModel, MapInfo, MaskModel, ModalWindow, State, UserInfoModel} from "@/store/model";
 import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
 
 function emptytLoginInfoModel() : LoginInfoModel{
@@ -25,11 +25,14 @@ class AppState implements State{
     loginModel: LoginInfoModel;
     mapInfo : MapInfo;
     currentMenuItem : ComboboxTopMenu | null;
-    modalWindow : ModalWindow | null;
+    mask : MaskModel;
     constructor() {
         this.loginModel = emptytLoginInfoModel();
         this.currentMenuItem = null;
-        this.modalWindow = null;
+        this.mask = new class implements MaskModel {
+            loadMask: LoadMask | null = null;
+            modalWindow: ModalWindow | null = null;
+        };
         this.mapInfo = defaultMapInfo();
     }
 }
@@ -46,13 +49,17 @@ export function createStore() : Store<State>{
                 state.loginModel.currentUser = value;
                 console.log("Set currentUser")
             },
-            setCurrentMenuItem (state : State,value : ComboboxTopMenu) {
+            setCurrentMenuItem (state : State,value : ComboboxTopMenu | null) {
                 state.currentMenuItem = value;
-                console.log("Set currentMenuItem : "+value.name )
+                console.log("Set currentMenuItem : "+value?.name )
             },
             setModalWindow (state : State,value : ModalWindow) {
-                state.modalWindow = value;
-                console.log("Modal window : " + value.show)
+                state.mask.modalWindow = value;
+                console.log("Modal window : " + value.show?'On':'Off')
+            },
+            setLoadMask (state : State,value : LoadMask) {
+                state.mask.loadMask = value;
+                console.log("Load mask : " + value.show?'On':'Off')
             },
             setCoords(state : State,value : GeolocationCoordinates){
                 state.mapInfo.coords = value;

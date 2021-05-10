@@ -1,6 +1,6 @@
 <template>
   <div :class="[isAuthorized?'main-size':'main-login']">
-    <InfoWindow v-if="showModal" />
+    <ModalMask/>
     <div v-if="!isAuthorized">
       <Login/>
     </div>

@@ -8,23 +8,22 @@ import {State, UserInfoModel} from "@/store/model.ts";
 import {Provide} from "vue-property-decorator";
 import {FastWebApi} from "@/components/api/fastWebApi.ts"
 import WorkPlace from "@/components/workPlace/WorkPlace.vue";
-import InfoWindow from "@/components/modal/infoWindow/InfoWindow.vue";
-
+import ModalMask from "@/components/modal/mask/ModalMask.vue";
 
 Vue.use(Vuex)
 @Component({
     components: {
+        ModalMask,
         Login,
         TopPanel,
-        WorkPlace,
-        InfoWindow
+        WorkPlace
     },
     store:createStore()
 })
 export default class App extends Vue {
     @Provide('state') mainState: State = this.state;
-    @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",'http://localhost:8080');
-    @Provide('infoWindow')infoWindow : InfoWindow = new InfoWindow()
+    @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",'http://localhost:8080',this.$store);
+    //@Provide('mask')mask : Mask = new Mask();
 
     mounted(){
         navigator.geolocation.getCurrentPosition((pos : GeolocationPosition) => {
@@ -60,10 +59,6 @@ export default class App extends Vue {
 
     get isAuthorized() : boolean {
         return this.state.loginModel.accessToken!=null;
-    }
-
-    get showModal() : boolean | undefined{
-        return this.state.modalWindow?.show;
     }
 
 }

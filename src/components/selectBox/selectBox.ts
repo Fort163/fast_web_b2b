@@ -10,13 +10,10 @@ import {ComboboxModel, SelectBoxModel, TableSettings} from "@/store/model";
 export default class SelectBox extends Vue {
     @Prop() model: Array<ComboboxModel> | undefined;
     @Prop() value: Array<ComboboxModel>| undefined;
+    @Prop() singleValue: boolean | undefined;
     private storeRepository: Array<ComboboxModel> = new Array<ComboboxModel>();
     private storeItem: Array<ComboboxModel> = new Array<ComboboxModel>();
     private show : boolean = false;
-
-    get comboModel() : Array<ComboboxModel> | undefined{
-        return <Array<ComboboxModel>>this.model;
-    }
 
     mounted() {
         const valueId = new Array<Number>()
@@ -31,6 +28,19 @@ export default class SelectBox extends Vue {
             }
             return
         });
+    }
+
+    get isSingleValue() : boolean{
+        if(this.singleValue){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    get comboModel() : Array<ComboboxModel> | undefined{
+        return this.model;
     }
 
     get storeItems(): Array<ComboboxModel>{
@@ -99,6 +109,10 @@ export default class SelectBox extends Vue {
 
     public addCurrentItems(value:number){
         const slice = <ComboboxModel>this.storeItems.splice(value,1).pop();
+        if(this.singleValue && <number>this.value?.length > 0){
+            const deleteItem = <ComboboxModel>this.value?.splice(0,1).pop();
+            this.storeItems?.push(deleteItem);
+        }
         this.value?.push(slice);
     }
 

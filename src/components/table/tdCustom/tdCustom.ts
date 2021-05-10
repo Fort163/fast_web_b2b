@@ -90,7 +90,7 @@ export default class TdCustom extends Vue{
 
     public checkValue(val: any) : void{
         if(this.column?.restriction){
-            this.isOk = this.column?.restriction.function(val);
+            this.isOk = this.column?.restriction.function(val,this.dataItem);
         }
         else {
             this.isOk = this.defaultCheckValue(val)

@@ -1,78 +1,29 @@
 export class GeocoderResultDefault implements GeocoderResult{
     geoObjects:Array<GeocoderObject>
+    longitude : number
+    latitude : number
     metaData:MetaData
-    text:string
-    constructor(response : any) {
-        this.geoObjects = <Array<GeocoderObject>>response.geoObjects.get(0).properties._data.metaDataProperty.GeocoderMetaData.Address.Components
+    name:string
+    constructor(response : any,coords : [number,number]) {
+        this.geoObjects = <Array<GeocoderObject>>response.geoObjects.get(0).properties._data.metaDataProperty.GeocoderMetaData.Address.Components;
+        this.longitude = <number>coords.pop();
+        this.latitude = <number>coords.pop();
         this.metaData = response.metaData;
-        this.text = new String(response.geoObjects.get(0).properties._data.text).toString();
+        this.name = new String(response.geoObjects.get(0).properties._data.text).toString();
     }
 }
 
 export interface GeocoderResult{
     geoObjects:Array<GeocoderObject>
+    longitude : number
+    latitude : number
     metaData:MetaData
-    text:string
+    name:string
 }
 
 export interface GeocoderObject{
     kind : string;
     name : string;
-}
-
-export interface Properties{
-    _data : DataProperty
-}
-
-export interface DataProperty{
-    metaDataProperty : MetaDataProperty
-}
-
-export interface MetaDataProperty{
-    GeocoderMetaData : GeocoderMetaData
-}
-
-export interface GeocoderMetaData{
-    AddressDetails : AddressDetails,
-    kind : string,
-    precision : string,
-    text : string
-}
-
-export interface AddressDetails{
-    AddressLine : string,
-    CountryNameCode : string,
-    CountryName : string,
-    AdministrativeArea : AdministrativeArea
-}
-
-export interface AdministrativeArea{
-    AdministrativeAreaName : string,
-    SubAdministrativeArea : SubAdministrativeArea,
-}
-
-export interface SubAdministrativeArea{
-    SubAdministrativeAreaName : string,
-    Locality : Locality
-}
-
-export interface Locality{
-    LocalityName: string,
-    DependentLocality : DependentLocality
-}
-
-export interface DependentLocality{
-    DependentLocalityName : string
-    Thoroughfare : Thoroughfare
-}
-
-export interface Thoroughfare{
-    ThoroughfareName :string,
-    Premise : Premise
-}
-
-export interface Premise{
-    PremiseNumber : string
 }
 
 export interface MetaData{

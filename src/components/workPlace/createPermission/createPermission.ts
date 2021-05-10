@@ -13,7 +13,7 @@ import {
 import TableCustom from "@/components/table/TableCustom.vue";
 import {Inject, Provide} from "vue-property-decorator";
 import {FastWebApi} from "@/components/api/fastWebApi";
-import InfoWindow from "@/components/modal/infoWindow/InfoWindow.vue";
+import InfoWindow from "@/components/modal/mask/ModalMask.vue";
 import {Store} from "vuex";
 
 /*item3.errorMessage = 'Возраст должен быть указан в диапазоне от 18 до 60 лет'
@@ -68,7 +68,7 @@ class PermissionTable extends DefaultTableSettings{
         this.columns = columns;
         this.data = data;
         this.saveFunc = save;
-        super.defaultButtons = false;
+        super.deleteButton = false;
     }
 }
 
@@ -136,8 +136,8 @@ export default class CreatePermission extends Vue {
         const company = new PermissionColumnItem("company","Моя компания",false,ColumnTypes.checkbox,'12%');
         const service = new PermissionColumnItem("service","Мои заказы",false,ColumnTypes.checkbox,'12%');
         const other = new PermissionColumnItem('other','Разное',false,ColumnTypes.checkbox,'12%');
-        permission.restriction = new class extends Handler<any, undefined, boolean> {
-            function(val: any): boolean {
+        permission.restriction = new class extends Handler<any, TableData, boolean> {
+            function(val: any,dataItem : TableData): boolean {
                 const value = <String>val;
                 if(!value || value.length === 0){
                     return false;

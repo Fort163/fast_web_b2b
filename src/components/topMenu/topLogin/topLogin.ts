@@ -1,6 +1,6 @@
 import Component from "vue-class-component";
 import Vue from "vue";
-import {State, UserInfoModel} from "@/store/model";
+import {CompanyModel, EmployeeModel, State, UserInfoModel} from "@/store/model";
 
 @Component({
     components: {
@@ -15,6 +15,14 @@ export default class TopMenu extends Vue {
         return this.state.loginModel.currentUser
     }
 
+    get employee() : EmployeeModel | undefined{
+        return this.user?.employee;
+    }
+
+    get company() : CompanyModel | undefined{
+        return this.employee?.company;
+    }
+
     get userpic() : String | undefined{
         return this.user?.userpic;
     }
@@ -24,11 +32,11 @@ export default class TopMenu extends Vue {
     }
 
     get companyName(){
-        return "ООО \"FastWeb\"";
+        return this.company?.name;
     }
 
-    get employee(){
-        return "Главный разработчик FW";
+    get employeeName(){
+        return this.employee?.name;
     }
 
     public logout() {

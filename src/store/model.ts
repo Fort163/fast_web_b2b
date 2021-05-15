@@ -43,7 +43,8 @@ export interface UserInfoModel{
     verified: Boolean,
     status: String,
     provider: String,
-    roleList: Array<Role>
+    roleList: Array<Role>,
+    employee : EmployeeModel
 }
 
 export interface Role{
@@ -60,6 +61,17 @@ export interface PermissionModel{
     company:boolean,
     service:boolean,
     other:boolean
+}
+
+export interface EmployeeModel{
+    name : string,
+    company : CompanyModel,
+    schedule : ScheduleModel,
+    serviceList : Array<ServiceModel>
+}
+
+export interface ServiceModel{
+    /*TODO*/
 }
 
 export interface MapInfo{

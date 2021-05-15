@@ -8,6 +8,9 @@
       <TopPanel/>
       <WorkPlace/>
     </div>
+    <input v-model="item1">
+    <button @click="send">sdf</button>
+    <h1>{{item2}}</h1>
   </div>
 </template>
 

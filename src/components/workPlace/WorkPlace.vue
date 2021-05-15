@@ -5,6 +5,7 @@
       <CreateRole v-if="this.currentFrame==='ROLE_CREATE_ROLE'" :key="'createRole'"></CreateRole>
       <CreateCompany v-if="this.currentFrame==='ROLE_CREATE_COMPANY'" :key="'createRole'"></CreateCompany>
       <CreateActivity v-if="this.currentFrame==='ROLE_CREATE_ACTIVITY'" :key="'createActivity'"></CreateActivity>
+      <ClaimCompany v-if="this.currentFrame==='ROLE_CLAIM_COMPANY'" :key="'claimCompany'"></ClaimCompany>
     </transition>
   </div>
 </template>

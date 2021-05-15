@@ -1,6 +1,5 @@
 <template>
   <div :style="{width:'100%',height:'100%'}">
-<!--    <h6>Create Company {{this.company}}</h6>-->
     <div v-if="this.step==='Step_1'" :class="'bodyCompany'">
       <h1>Шаг 1.</h1>
       <h1>Укажите название и сферу деятельности вашей компании.</h1>

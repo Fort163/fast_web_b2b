@@ -57,7 +57,6 @@ export class FastWebWS {
     }
 
     public connect(){
-        alert('Con')
         this._ws = new SockJS(this.URL);
         this._socket = Stomp.over(this._ws);
         this._socket.connect( {

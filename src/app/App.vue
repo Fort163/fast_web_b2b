@@ -7,6 +7,7 @@
     <div v-if="isAuthorized" class="main-work">
       <TopPanel/>
       <WorkPlace/>
+      <BottomMenu/>
     </div>
   </div>
 </template>

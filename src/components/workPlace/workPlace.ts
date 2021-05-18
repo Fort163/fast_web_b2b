@@ -7,8 +7,7 @@ import CreateCompany from "@/components/workPlace/createCompany/CreateCompany.vu
 import CreateActivity from "@/components/workPlace/createActivity/CreateActivity.vue";
 import ClaimCompany from "@/components/workPlace/claimCompany/ClaimCompany.vue";
 import {EmptyCombobox} from "@/components/selectBoxFilter/selectBoxFilter";
-import {Inject} from "vue-property-decorator";
-import {Client, Frame} from "webstomp-client";
+import {Inject, Watch} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 
 @Component({
@@ -19,34 +18,34 @@ import {FastWebWS} from "@/components/api/ws/fastWebWS";
         CreateActivity,
         ClaimCompany
     }
+
 })
 export default class WorkPlace extends Vue {
     @Inject('socket') socketMain: FastWebWS | undefined;
+    @Inject('state') state: State | undefined;
+    @Watch('connect')
+    socketConnect(val: boolean, oldVal: boolean) {
+        this.socket?.subscribe('/b2b/user/b2b/message/test', message => {
+            this.item2 = JSON.parse(message.body).name
+        });
+    }
+
     private item1 : string = '';
     private item2 : string = '';
 
-    mounted(){
-        this.socket?.subscribe('/socket/message/test', message => {
-            this.item2 = JSON.parse(message.body).name
-        })
+    get connect(){
+         return this.socketMain?.isConnect;
     }
 
     get socket(){
         return this.socketMain?.socket
     }
 
-    get state():State{
-        return this.$store.state
-    }
-
     get currentFrame() : String | undefined{
-        return this.state.currentMenuItem?.permission;
+        return this.state?.currentMenuItem?.permission;
     }
 
     public send(){
-        //https://www.baeldung.com/websockets-spring
-        //https://www.baeldung.com/spring-security-websockets
-        //https://www.baeldung.com/spring-websockets-send-message-to-user
         const emptyCombobox = new EmptyCombobox();
         emptyCombobox.name = this.item1;
         this.socket?.send('/b2b/socket/test',JSON.stringify(emptyCombobox));

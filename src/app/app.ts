@@ -10,6 +10,7 @@ import {FastWebApi} from "@/components/api/fastWebApi.ts"
 import WorkPlace from "@/components/workPlace/WorkPlace.vue";
 import ModalMask from "@/components/modal/mask/ModalMask.vue";
 import {FastWebWS} from "@/components/api/ws/fastWebWS.ts";
+import BottomMenu from "@/components/bottomMenu/BottomMenu.vue";
 
 Vue.use(Vuex)
 @Component({
@@ -17,14 +18,15 @@ Vue.use(Vuex)
         ModalMask,
         Login,
         TopPanel,
-        WorkPlace
+        WorkPlace,
+        BottomMenu
     },
     store:createStore()
 })
 export default class App extends Vue {
     @Provide('state') mainState: State = this.state;
     @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",'http://localhost:8080',this.$store);
-    @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",'http://localhost:8080/fast-web-websocket',this.$store);
+    @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",'http://localhost:8080/b2b/fast-web-websocket',this.$store);
 
     mounted(){
         navigator.geolocation.getCurrentPosition((pos : GeolocationPosition) => {

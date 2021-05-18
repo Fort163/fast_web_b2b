@@ -1,5 +1,13 @@
 import Vuex, {Store} from "vuex";
-import {LoadMask, LoginInfoModel, MapInfo, MaskModel, ModalWindow, State, UserInfoModel} from "@/store/model";
+import {
+    LoadMask,
+    LoginInfoModel,
+    MapInfo,
+    MaskModel,
+    ModalWindow,
+    State,
+    UserInfoModel
+} from "@/store/model";
 import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
 
 function emptytLoginInfoModel() : LoginInfoModel{
@@ -55,11 +63,11 @@ export function createStore() : Store<State>{
             },
             setModalWindow (state : State,value : ModalWindow) {
                 state.mask.modalWindow = value;
-                console.log("Modal window : " + value.show?'On':'Off')
+                console.log("Modal window : " + (value.show?'On':'Off'))
             },
             setLoadMask (state : State,value : LoadMask) {
                 state.mask.loadMask = value;
-                console.log("Load mask : " + value.show?'On':'Off')
+                console.log("Load mask : " + (value.show?'On':'Off'))
             },
             setCoords(state : State,value : GeolocationCoordinates){
                 state.mapInfo.coords = value;

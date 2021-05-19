@@ -1,12 +1,13 @@
 import Component from "vue-class-component";
 import Vue from "vue";
-import {ComboboxModel, ModalWindow, State} from "@/store/model";
+import {ComboboxModel, ModalWindow, SimpleValue, State} from "@/store/model";
 import {Inject} from "vue-property-decorator";
 import {FastWebApi} from "@/components/api/fastWebApi";
 import SelectBoxFilter from "@/components/selectBoxFilter/SelectBoxFilter.vue";
 import {EmptyCombobox} from "@/components/selectBoxFilter/selectBoxFilter";
 // @ts-ignore
 import {loadYmap} from 'vue-yandex-maps'
+import {FastWebWS} from "@/components/api/ws/fastWebWS";
 
 @Component({
     components: {
@@ -14,11 +15,16 @@ import {loadYmap} from 'vue-yandex-maps'
     }
 })
 export default class ClaimCompany extends Vue {
+    @Inject('socket') socketMain: FastWebWS | undefined;
     @Inject('state') state: State | undefined;
     @Inject('api') api: FastWebApi | undefined;
     private companyArray = new Array<ComboboxModel>();
     public selectCompany : ComboboxModel = new EmptyCombobox();
     private city : string = '';
+
+    get socket(){
+        return this.socketMain?.socket
+    }
 
     created() {
         this.downloadCompany();
@@ -95,6 +101,9 @@ export default class ClaimCompany extends Vue {
             });
         flag.then( (res:boolean) => {
             if(res){
+                const simpleValue = new SimpleValue();
+                simpleValue.valueLong = this.companyId.valueOf();
+                this.socket?.send('/b2b/socket/claimCompany',JSON.stringify(simpleValue));
                 this.$store.commit('setModalWindow', new class implements ModalWindow {
                     message: string | null = 'Вы подали заявку в компанию. Теперь необходимо дождаться когда руководитель рассмотрит обращение.';
                     show : boolean = true;

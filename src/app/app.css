@@ -45,3 +45,55 @@ input::-webkit-outer-spin-button {
     width: 100%;
     overflow: hidden;
 }
+
+/*
+All application class
+ */
+
+.button-default{
+    border: none;
+    min-width: 120px;
+    max-width: 350px;
+    min-height: 50px;
+    max-height: 50px;
+    color: #1E98FF;
+    background-color: white;
+    font-family: cursive;
+    font-size: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.button-default:hover{
+    background-color: #1E98FF !important;
+    color: ghostwhite;
+    border-radius: 25px;
+    box-shadow:0 0 30px #7bbfe9;
+}
+
+.button-danger{
+    border: none;
+    min-width: 120px;
+    max-width: 350px;
+    min-height: 50px;
+    max-height: 50px;
+    color: #ff1032;
+    background-color: white;
+    font-family: cursive;
+    font-size: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.button-danger:hover{
+    background-color: #ff1032 !important;
+    color: ghostwhite;
+    border-radius: 25px;
+    box-shadow:0 0 30px #ff6f83;
+}

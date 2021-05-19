@@ -15,12 +15,14 @@ import {
     State,
     TableColumnItem,
     TableData,
-    TableSettings
+    TableSettings, TransientValue
 } from "@/store/model";
 import {GeocoderResult, GeocoderResultDefault} from "@/structure/map/ymapsModel";
 import {FastWebApi} from "@/components/api/fastWebApi";
 import SelectBox from "@/components/selectBox/SelectBox.vue";
 import TableCustom from "@/components/table/TableCustom.vue";
+import ButtonFooter from "@/components/buttonFooter/ButtonFooter.vue";
+import {Store} from "vuex";
 
 class Company implements CompanyModel{
     name : string | null = null;
@@ -59,13 +61,78 @@ class ScheduleTable extends DefaultTableSettings{
     }
 }
 
+class SaveCompany extends Handler<undefined, undefined, void> {
+    private api: FastWebApi;
+    private store: Store<any>;
+    private company : CompanyModel;
+    constructor(api: FastWebApi,store: Store<any>,company : CompanyModel) {
+        super();
+        this.api = api;
+        this.store = store;
+        this.company = company;
+    }
+    function(val1: undefined, val2: undefined): void {
+        const flag : Promise<boolean> = <Promise<boolean>>this.api?.postApi<boolean>("/company/create/company",this.company);
+        flag.then((item : boolean)=> {
+            if(item){
+                this.store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Компания успешно сохранена. Зайдите в систему повторно чтобы изменения вступили в силу.';
+                    show : boolean = true;
+                });
+                this.store.commit('login',null);
+                this.store.commit('setCurrentUser',null);
+            }
+        });
+    }
+}
+
+class DisableStep extends Handler<string, undefined, boolean> {
+    private company : CompanyModel = new Company();
+    constructor(company : CompanyModel) {
+        super();
+        this.company = company;
+    }
+    function(value: String | undefined, val2: undefined): boolean {
+        const step = value?.toString();
+        if(step === 'Step_1'){
+            if((<Array<ComboboxModel>>this.company.activityList).length > 0 && this.company.name){
+                return false;
+            }
+        }
+        if(step === 'Step_2'){
+            if(this.company.schedulesList){
+                let flag = true;
+                this.company.schedulesList.forEach(item => {
+                    if(item.work && this.checkClock(item.clockFrom,item.clockTo)){
+                        flag = false;
+                    }
+                })
+                return flag;
+            }
+        }
+        if(step === 'Step_3'){
+            if(this.company.geoPosition){
+                return false;
+            }
+        }
+        return true;
+    }
+    checkClock(from : string,to : string):boolean{
+        if(!from && !to){
+            return false;
+        }
+        return from < to;
+    }
+}
+
 @Component({
     components: {
         yandexMap,
         ymapMarker,
         loadYmap,
         SelectBox,
-        TableCustom
+        TableCustom,
+        ButtonFooter
     }
 })
 export default class CreateCompany extends Vue {
@@ -74,7 +141,7 @@ export default class CreateCompany extends Vue {
 
     private activityData : Array<ComboboxModel> = new Array<ComboboxModel>();
     private currentCompany : CompanyModel = new Company();
-    private currentStep : string = "Step_1";
+    public currentStep : TransientValue<string> = new TransientValue<string>("Step_1");
     private scheduleColumn : Array<TableColumnItem> = new Array<TableColumnItem>();
 
     created(){
@@ -91,15 +158,11 @@ export default class CreateCompany extends Vue {
 
     async mounted() {
         // @ts-ignore
-        await loadYmap({...settings,debug:true});
+        await loadYmap(this.settings);
     }
 
     get step() : string{
-        return this.currentStep;
-    }
-
-    set step(value : string){
-        this.currentStep = value;
+        return this.currentStep.value;
     }
 
     get comboData() : Array<ComboboxModel>{
@@ -157,7 +220,7 @@ export default class CreateCompany extends Vue {
         if(coords){
             return [coords.latitude,coords.longitude]
         }
-        return [37.611106671875,55.749346930602925];
+        return [55.749346930602925,37.611106671875];
     }
 
     get companyCoords() : [number,number] | undefined{
@@ -203,57 +266,12 @@ export default class CreateCompany extends Vue {
         )
     }
 
-    public next() : void{
-        const current = this.step;
-        const strings = current.split('_');
-        const number = Number.parseInt(strings[1])+1;
-        this.step = strings[0]+'_'+number;
+    public save() : Handler<undefined, undefined, void>{
+        return new SaveCompany(<FastWebApi>this.api,this.$store,this.company);
     }
 
-    public previous() : void{
-        const current = this.step;
-        const strings = current.split('_');
-        const number = Number.parseInt(strings[1])-1;
-        this.step = strings[0]+'_'+number;
-    }
-
-    public save() : void{
-        const flag : Promise<boolean> = <Promise<boolean>>this.api?.postApi<boolean>("/company/create/company",this.company);
-        flag.then((item : boolean)=> {
-            if(item){
-                this.$store.commit('setModalWindow', new class implements ModalWindow {
-                    message: string | null = 'Компания успешно сохранена. Зайдите в систему повторно чтобы изменения вступили в силу.';
-                    show : boolean = true;
-                });
-                this.$store.commit('login',null);
-                this.$store.commit('setCurrentUser',null);
-            }
-        });
-    }
-
-    public isDisabled(step : string) : boolean{
-        if(step === 'Step_1'){
-            if(this.companyActivity.length > 0 && this.company.name){
-                return false;
-            }
-        }
-        if(step === 'Step_2'){
-            if(this.company.schedulesList){
-                let flag = true;
-                this.schedulesList.forEach(item => {
-                    if(item.work && this.checkClock(item.clockFrom,item.clockTo)){
-                        flag = false;
-                    }
-                })
-                return flag;
-            }
-        }
-        if(step === 'Step_3'){
-            if(this.geocoderResult){
-                return false;
-            }
-        }
-        return true;
+    public isDisabled() : Handler<string, undefined, boolean>{
+        return new DisableStep(this.company);
     }
 
     initScheduleData(){
@@ -296,11 +314,6 @@ export default class CreateCompany extends Vue {
         this.scheduleColumn.push(dayOfWeek,clockFrom,clockTo,work);
     }
 
-    checkClock(from : string,to : string):boolean{
-        if(!from && !to){
-            return false;
-        }
-        return from < to;
-    }
+
 
 }

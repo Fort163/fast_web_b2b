@@ -63,11 +63,27 @@ export interface PermissionModel{
     other:boolean
 }
 
+export interface ClaimCompanyRequestModel{
+    id: Number;
+    confirmed : boolean;
+    company: CompanyModel | null;
+    user : UserInfoModel;
+}
+
 export interface EmployeeModel{
     name : string,
     company : CompanyModel,
     schedule : ScheduleModel,
     serviceList : Array<ServiceModel>
+}
+
+export interface NotificationModel{
+    id: Number,
+    permission: string,
+    name: string,
+    fromUser:string,
+    toUser:string,
+    shown: boolean
 }
 
 export interface ServiceModel{
@@ -220,3 +236,59 @@ export enum DayOfWeek{
     sunday = "Воскресенье"
 }
 
+export class TransientValue<T>{
+    private _value : T;
+    constructor(value : T) {
+        this._value = value;
+    }
+
+    get value(): T {
+        return this._value;
+    }
+
+    set value(value: T) {
+        this._value = value;
+    }
+}
+
+export class SimpleValue{
+    private longValue : number | null = null;
+    private stringValue : string | null = null;
+    private doubleValue : number | null = null;
+    private booleanValue : boolean | null = null;
+
+    constructor() {
+    }
+
+    get valueLong(): number | null {
+        return this.longValue;
+    }
+
+    set valueLong(value: number | null) {
+        this.longValue = value;
+    }
+
+    get valueString(): string | null {
+        return this.stringValue;
+    }
+
+    set valueString(value: string | null) {
+        this.stringValue = value;
+    }
+
+    get valueDouble(): number | null {
+        return this.doubleValue;
+    }
+
+    set valueDouble(value: number | null) {
+        this.doubleValue = value;
+    }
+
+    get valueBoolean(): boolean | null {
+        return this.booleanValue;
+    }
+
+    set valueBoolean(value: boolean | null) {
+        this.booleanValue = value;
+    }
+}

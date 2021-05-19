@@ -42,17 +42,7 @@
         </div>
       </div>
     </div>
-    <div :class="'footerCompany'">
-      <div :class="'footerLeft'">
-        <button v-if="this.step!='Step_1'" :class="'left-button'" @click="this.previous"/>
-      </div>
-      <div :class="'footerRight'">
-        <button v-if="this.step!='Step_4'" :disabled="this.isDisabled(this.step)" :class="'right-button'" @click="this.next" />
-        <button v-if="this.step==='Step_4'" :class="'button-save'" @click="this.save">
-          Все верно!
-        </button>
-      </div>
-    </div>
+    <ButtonFooter :startStep="this.currentStep" :maxStep="'Step_4'" :lastButtonText="'Все верно!'" :lastFunc="this.save()" :disabled="this.isDisabled()" />
   </div>
 </template>
 

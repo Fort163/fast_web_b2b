@@ -59,6 +59,10 @@ export default class ClaimCompany extends Vue {
         return this.valueCompany.name.toString();
     }
 
+    get sizeCompany() : number{
+        return this.company.length
+    }
+
     public watchPosition(){
         navigator.geolocation.getCurrentPosition((pos : GeolocationPosition) => {
             this.$store.commit('setCoords',pos.coords);

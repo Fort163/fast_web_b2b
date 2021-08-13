@@ -9,6 +9,7 @@ import ClaimCompany from "@/components/workPlace/claimCompany/ClaimCompany.vue";
 import {Inject} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 import AddEmployee from "@/components/workPlace/addEmployee/AddEmployee.vue";
+import MyCompany from "@/components/workPlace/myCompany/MyCompany.vue";
 
 @Component({
     components: {
@@ -17,7 +18,8 @@ import AddEmployee from "@/components/workPlace/addEmployee/AddEmployee.vue";
         CreateCompany,
         CreateActivity,
         ClaimCompany,
-        AddEmployee
+        AddEmployee,
+        MyCompany
     }
 
 })

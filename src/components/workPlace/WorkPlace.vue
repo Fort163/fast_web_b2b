@@ -7,6 +7,7 @@
       <CreateActivity v-if="this.currentFrame==='ROLE_CREATE_ACTIVITY'" :key="'createActivity'"></CreateActivity>
       <ClaimCompany v-if="this.currentFrame==='ROLE_CLAIM_COMPANY'" :key="'claimCompany'"></ClaimCompany>
       <AddEmployee v-if="this.currentFrame==='ROLE_ADD_EMPLOYEE'" :key="'addEmployee'"></AddEmployee>
+      <MyCompany v-if="this.currentFrame==='ROLE_MY_COMPANY'" :key="'myCompany'"></MyCompany>
     </transition>
   </div>
 </template>

@@ -7,10 +7,10 @@
           Отказать
         </button>
         <div :class="'employeeName'">{{item.user.fullName}}</div>
-        <button :class="'button-default'" :style="{fontSize : '20px'}" @click="this.selectConfig(item)">
+        <button :class="'button-default'" :style="{fontSize : '20px'}" @click="selectConfig(item)">
           Добавить с настройками
         </button>
-        <button :class="'button-default'" :style="{fontSize : '18px'}" @click="this.selectNoConfig(item)">
+        <button :class="'button-default'" :style="{fontSize : '18px'}" @click="selectNoConfig(item)">
           Добавить и разрешить редактирование
         </button>
       </div>

@@ -1,5 +1,6 @@
 import Vuex, {Store} from "vuex";
 import {
+    CompanyModel,
     LoadMask,
     LoginInfoModel,
     MapInfo,
@@ -10,7 +11,7 @@ import {
 } from "@/store/model";
 import {ComboboxTopMenu} from "@/components/topMenu/topMenu/topMenuMapHelper";
 
-function emptytLoginInfoModel() : LoginInfoModel{
+function emptyLoginInfoModel() : LoginInfoModel{
     return {
         accessToken : null,
         currentUser : null
@@ -35,7 +36,7 @@ class AppState implements State{
     currentMenuItem : ComboboxTopMenu | null;
     mask : MaskModel;
     constructor() {
-        this.loginModel = emptytLoginInfoModel();
+        this.loginModel = emptyLoginInfoModel();
         this.currentMenuItem = null;
         this.mask = new class implements MaskModel {
             loadMask: LoadMask | null = null;
@@ -72,6 +73,17 @@ export function createStore() : Store<State>{
             setCoords(state : State,value : GeolocationCoordinates){
                 state.mapInfo.coords = value;
                 console.log("Set position")
+            }
+        },
+        getters: {
+            user: state => {
+                return state.loginModel.currentUser;
+            },
+            employee: state => {
+                return state.loginModel.currentUser?.employee;
+            },
+            company: state => {
+                return state.loginModel.currentUser?.employee.company;
             }
         }
     });

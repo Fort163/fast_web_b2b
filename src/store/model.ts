@@ -74,7 +74,8 @@ export interface EmployeeModel{
     name : string,
     company : CompanyModel,
     schedule : ScheduleModel,
-    serviceList : Array<ServiceModel>
+    serviceList : Array<ServiceModel>,
+    showClient : boolean
 }
 
 export interface NotificationModel{
@@ -93,6 +94,13 @@ export interface ServiceModel{
 export interface MapInfo{
     settings : MapSettings,
     coords : GeolocationCoordinates | null
+}
+
+export interface ServiceTypeModel{
+    id: Number,
+    name:string,
+    workClock:string,
+    showClient:boolean
 }
 
 export interface MapSettings{
@@ -206,6 +214,7 @@ export class DefaultSchedule implements ScheduleModel{
 }
 
 export interface CompanyModel {
+    id : number | null
     name : string | null
     activityList : Array<ComboboxModel> | null
     schedulesList : Array<ScheduleModel> | null
@@ -290,5 +299,31 @@ export class SimpleValue{
 
     set valueBoolean(value: boolean | null) {
         this.booleanValue = value;
+    }
+}
+
+export class ListWhitLong{
+    private data: Array<TableData>;
+    private id : number;
+
+    constructor(data: Array<TableData>, id: number) {
+        this.data = data;
+        this.id = id;
+    }
+
+    get getData(): Array<TableData> {
+        return this.data;
+    }
+
+    set setData(value: Array<TableData>) {
+        this.data = value;
+    }
+
+    get getId(): number {
+        return this.id;
+    }
+
+    set setId(value: number) {
+        this.id = value;
     }
 }

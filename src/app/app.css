@@ -67,6 +67,13 @@ All application class
     justify-items: center;
 }
 
+.button-default-press{
+    background-color: #1E98FF !important;
+    color: ghostwhite;
+    border-radius: 25px;
+    box-shadow:0 0 30px #7bbfe9;
+}
+
 .button-default:hover{
     background-color: #1E98FF !important;
     color: ghostwhite;

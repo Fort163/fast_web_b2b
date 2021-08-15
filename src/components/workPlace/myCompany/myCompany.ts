@@ -1,18 +1,31 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import Statistic from "@/components/workPlace/myCompany/statistic/Statistic.vue";
+import Employees from "@/components/workPlace/myCompany/employees/Employees.vue";
+import CreateServiceType from "@/components/workPlace/myCompany/createServiceType/CreateServiceType.vue";
 
 @Component({
     components: {
-        Statistic
+        Statistic,
+        Employees,
+        CreateServiceType
     }
 })
 export default class MyCompany extends Vue {
 
-    private frame : String = 'STATISTIC';
+    public static STATISTIC = 'STATISTIC';
+    public static EMPLOYEES = 'EMPLOYEES';
+    public static CREATE_SERVICE_TYPE = 'CREATE_SERVICE_TYPE';
 
-    get currentFrame() : String | undefined{
+    private frame : String = MyCompany.STATISTIC;
+
+    get currentFrame() : String {
         return this.frame;
     }
+
+    public setFrame(frame : String){
+        this.frame = frame;
+    }
+
 
 }

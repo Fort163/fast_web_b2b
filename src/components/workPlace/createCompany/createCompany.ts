@@ -25,6 +25,7 @@ import ButtonFooter from "@/components/buttonFooter/ButtonFooter.vue";
 import {Store} from "vuex";
 
 class Company implements CompanyModel{
+    id : number | null = null;
     name : string | null = null;
     activityList : Array<ComboboxModel> | null = new Array<ComboboxModel>();
     schedulesList : Array<ScheduleModel> | null = new Array<ScheduleModel>();

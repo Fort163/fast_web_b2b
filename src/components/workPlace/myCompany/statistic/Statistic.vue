@@ -1,6 +1,6 @@
 <template>
   <div :class="'mainStatistic'">
-      Статистика
+      Статистика в разработке
   </div>
 </template>
 

@@ -1,42 +1,26 @@
 import Component from "vue-class-component";
 import Vue from "vue";
-import {CompanyModel, EmployeeModel, State, UserInfoModel} from "@/store/model";
 
 @Component({
     components: {
     }
 })
 export default class TopMenu extends Vue {
-    get state():State{
-        return this.$store.state
-    }
-
-    get user() : UserInfoModel | null{
-        return this.state.loginModel.currentUser
-    }
-
-    get employee() : EmployeeModel | undefined{
-        return this.user?.employee;
-    }
-
-    get company() : CompanyModel | undefined{
-        return this.employee?.company;
-    }
 
     get userpic() : String | undefined{
-        return this.user?.userpic;
+        return this.$store.getters.user?.userpic;
     }
 
     get welcome() : String | undefined{
-        return "Добро пожаловать, "+this.user?.firstName;
+        return "Добро пожаловать, "+this.$store.getters.user?.fullName;
     }
 
     get companyName(){
-        return this.company?.name;
+        return this.$store.getters.company?.name;
     }
 
     get employeeName(){
-        return this.employee?.name;
+        return this.$store.getters.employee?.name;
     }
 
     public logout() {
@@ -44,8 +28,9 @@ export default class TopMenu extends Vue {
         this.$store.commit('setCurrentUser',null);
     }
 
+    //TODO
     public settings() {
-        alert('todo')
+
     }
 
 }

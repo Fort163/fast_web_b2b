@@ -12,6 +12,14 @@
     flex-direction: column;
 }
 
+.myCompanyButton{
+    height: 25% !important;
+    margin-top: 10px;
+    background-color: #dde0e0 !important;
+    max-height: 200px !important;
+    border-radius: 0px !important;
+}
+
 .tableMyCompany{
     display: flex;
     width: 80%;

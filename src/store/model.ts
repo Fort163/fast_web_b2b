@@ -70,16 +70,19 @@ export interface ClaimCompanyRequestModel{
     user : UserInfoModel;
 }
 
-export interface EmployeeModel{
-    name : string,
-    company : CompanyModel,
-    schedule : ScheduleModel,
-    serviceList : Array<ServiceModel>,
-    showClient : boolean
+export interface EmployeeModel extends TableData{
+    name : string | null,
+    company : CompanyModel | null,
+    schedulesList : Array<ScheduleModel> | null,
+    serviceList : Array<ServiceModel> | null,
+    serviceTypeList : Array<ServiceTypeModel> | null,
+    showClient : boolean,
+    vacationFrom : string | null,
+    vacationTo : string | null
 }
 
 export interface NotificationModel{
-    id: Number,
+    id: number,
     permission: string,
     name: string,
     fromUser:string,
@@ -96,9 +99,7 @@ export interface MapInfo{
     coords : GeolocationCoordinates | null
 }
 
-export interface ServiceTypeModel{
-    id: Number,
-    name:string,
+export interface ServiceTypeModel extends ComboboxModel{
     workClock:string,
     showClient:boolean
 }
@@ -326,4 +327,53 @@ export class ListWhitLong{
     set setId(value: number) {
         this.id = value;
     }
+}
+
+export class DtoWhitLong{
+    private data: TableData;
+    private id : number;
+
+    constructor(data: TableData, id: number) {
+        this.data = data;
+        this.id = id;
+    }
+
+    get getData(): TableData {
+        return this.data;
+    }
+
+    set setData(value: TableData) {
+        this.data = value;
+    }
+
+    get getId(): number {
+        return this.id;
+    }
+
+    set setId(value: number) {
+        this.id = value;
+    }
+}
+
+export class MapDto{
+    private data : Map<string, any> = new Map<string, any>();
+
+    public add(str : string,val: any){
+        this.data.set(str,val)
+    }
+
+    get getData(): Map<string, any> {
+        return this.data;
+    }
+
+    set setData(value: Map<string, any>) {
+        this.data = value;
+    }
+
+    public getJSON() : String {
+        let json : String = '';
+        json += JSON.stringify(this.data.entries().next())
+        return json;
+    }
+
 }

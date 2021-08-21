@@ -83,7 +83,7 @@ export function createStore() : Store<State>{
                 return state.loginModel.currentUser?.employee;
             },
             company: state => {
-                return state.loginModel.currentUser?.employee.company;
+                return state.loginModel.currentUser?.employee?.company;
             }
         }
     });

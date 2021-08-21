@@ -3,15 +3,17 @@ import {Inject, Watch} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 import Component from "vue-class-component";
 import {FastWebApi} from "@/components/api/fastWebApi";
-import {ComboboxModel, NotificationModel, PermissionModel} from "@/store/model";
+import {ComboboxModel, NotificationModel, PermissionModel, SimpleValue} from "@/store/model";
 
 class NotificationItem {
+    id: number;
     name: string;
     permission: string;
     count : number = 0;
     data: Array<NotificationModel> = new Array<NotificationModel>();
 
     constructor(item: NotificationModel) {
+        this.id = item.id;
         this.name = item.name;
         this.permission = item.permission;
         this.addItem(item);
@@ -77,12 +79,28 @@ export default class BottomMenu extends Vue {
     public selectTop(index : number){
         const slice = <NotificationItem>this.notificationItems.splice(index,1).pop();
         slice.data.forEach(notification =>{
-            notification.shown = true;
+            const simpleValue = new SimpleValue();
+            simpleValue.valueLong = notification.id;
+            const flag : Promise<boolean> = <Promise<boolean>>this.api?.postApi<boolean>("/notification/close/notification",simpleValue);
+            flag.then((item : boolean)=> {
+                if(item){
+                    notification.shown = true;
+                }
+            });
         });
-        this.$store.commit('setCurrentMenuItem',{
-            name: slice.name,
-            permission : slice.permission
-        });
+
+        if(slice.permission.startsWith("FUNC_")){
+            if(slice.permission === "FUNC_LOGOUT"){
+                this.$store.commit('login',null);
+                this.$store.commit('setCurrentUser',null);
+            }
+        }
+        else {
+            this.$store.commit('setCurrentMenuItem',{
+                name: slice.name,
+                permission : slice.permission
+            });
+        }
     }
 
 }

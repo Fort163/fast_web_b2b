@@ -30,3 +30,17 @@
     align-items: center;
     justify-content: center;
 }
+
+.frame-enter-active,.placer-leave-active {
+    transition: all .5s;
+}
+
+.frame-enter {
+    opacity: .5;
+    transform: translateX(100%);
+}
+
+.frame-leave-to {
+    opacity: .5;
+    transform: translateX(-100%);
+}

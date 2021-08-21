@@ -35,10 +35,4 @@ export default class WorkPlace extends Vue {
         return this.state?.currentMenuItem?.permission;
     }
 
-    public send(){
-        const simpleValue = new SimpleValue();
-        simpleValue.valueLong = 1;
-        this.socket?.send('/b2b/socket/claimCompany',JSON.stringify(simpleValue));
-    }
-
 }

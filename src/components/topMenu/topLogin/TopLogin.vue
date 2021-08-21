@@ -3,8 +3,8 @@
       <div class="loginInfo">
         <img class="photo" alt="No photo" :src="this.userpic">
         <div>{{this.welcome}}</div>
-        <div>{{this.companyName}}</div>
         <div>{{this.employeeName}}</div>
+        <div>{{this.companyName}}</div>
       </div>
       <div class="loginButtons">
         <button class="exit-button" @click="logout"></button>

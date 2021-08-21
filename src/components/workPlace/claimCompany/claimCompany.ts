@@ -112,8 +112,7 @@ export default class ClaimCompany extends Vue {
                     message: string | null = 'Вы подали заявку в компанию. Теперь необходимо дождаться когда руководитель рассмотрит обращение.';
                     show : boolean = true;
                 });
-                this.$store.commit('login',null);
-                this.$store.commit('setCurrentUser',null);
+                this.$store.commit('setCurrentMenuItem',null);
             }
         });
     }

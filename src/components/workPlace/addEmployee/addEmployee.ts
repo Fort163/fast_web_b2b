@@ -2,10 +2,11 @@ import Component from "vue-class-component";
 import Vue from "vue";
 import {Inject} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
-import {ClaimCompanyRequestModel, PermissionModel, State} from "@/store/model";
+import {ClaimCompanyRequestModel, DtoWhitLong, ModalWindow, PermissionModel, SimpleValue, State} from "@/store/model";
 import {FastWebApi} from "@/components/api/fastWebApi";
 import WithConfig from "@/components/workPlace/addEmployee/withConfig/WithConfig.vue";
 import WithOutConfig from "@/components/workPlace/addEmployee/withOutConfig/WithOutConfig.vue";
+import {Client} from "webstomp-client";
 
 @Component({
     components: {
@@ -40,8 +41,32 @@ export default class AddEmployee extends Vue {
         return this.claimCompanyRequest;
     }
 
-    public refuse(request : ClaimCompanyRequestModel){
+    get socket() : Client | null | undefined {
+        return this.socketMain?.socket
+    }
 
+    public refuse(request : ClaimCompanyRequestModel){
+        const simpleValue = new SimpleValue();
+        simpleValue.valueLong = request.id.valueOf();
+        const flag : Promise<Number> = <Promise<Number>>this.api?.postApi<Number>("/company/refuse/employee",simpleValue);
+        flag.then((item : Number)=> {
+            if(item){
+                const simpleValue = new SimpleValue();
+                simpleValue.valueLong = item.valueOf();
+                this.socket?.send('/b2b/socket/addEmployee',JSON.stringify(simpleValue));
+                this.$store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Запрос сотрудника отклонен';
+                    show : boolean = true;
+                });
+                this.claims.splice(this.claims.indexOf(request),1);
+            }
+            else{
+                this.$store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Произошла ошибка';
+                    show : boolean = true;
+                });
+            }
+        });
     }
 
     public selectWithConfig(request : ClaimCompanyRequestModel){
@@ -63,7 +88,6 @@ export default class AddEmployee extends Vue {
     }
 
     public backFrame(){
-        console.log("Тут")
         this.frame = AddEmployee.MAIN;
     }
 

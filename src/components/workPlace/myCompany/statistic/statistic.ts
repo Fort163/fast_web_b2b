@@ -8,4 +8,8 @@ import Vue from "vue";
 })
 export default class Statistic extends Vue {
 
+    get companyId(){
+        return "http://localhost:8082?companyId="+this.$store.getters.company?.id;
+    }
+
 }

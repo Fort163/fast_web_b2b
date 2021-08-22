@@ -30,6 +30,23 @@ export default class SelectBox extends Vue {
         });
     }
 
+    updated(){
+        if(this.storeRepository.length==0) {
+            const valueId = new Array<Number>()
+            if(this.value && this.value.length>0){
+                this.value.forEach(itemValue =>{
+                    valueId.push(itemValue.id);
+                })
+            }
+            this.comboModel?.forEach(item => {
+                if (valueId.indexOf(item.id) === -1) {
+                    this.storeRepository.push(item);
+                }
+                return
+            });
+        }
+    }
+
     get isSingleValue() : boolean{
         if(this.singleValue){
             return true;

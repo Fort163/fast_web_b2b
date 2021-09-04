@@ -5,7 +5,7 @@ import {
     LoginInfoModel,
     MapInfo,
     MaskModel,
-    ModalWindow,
+    ModalWindow, Role, SearchDto, SearchServiceDto,
     State,
     UserInfoModel
 } from "@/store/model";
@@ -35,6 +35,7 @@ class AppState implements State{
     mapInfo : MapInfo;
     currentMenuItem : ComboboxTopMenu | null;
     mask : MaskModel;
+    searchDto : SearchDto = new SearchDto();
     constructor() {
         this.loginModel = emptyLoginInfoModel();
         this.currentMenuItem = null;
@@ -59,6 +60,13 @@ export function createStore() : Store<State>{
                 console.log("Set currentUser")
             },
             setCurrentMenuItem (state : State,value : ComboboxTopMenu | null) {
+                if(value === null){
+                    value = new class implements ComboboxTopMenu{
+                        id: Number = -1;
+                        name: String = 'Настройки';
+                        permission: String | null = null;
+                    }
+                }
                 state.currentMenuItem = value;
                 console.log("Set currentMenuItem : "+value?.name )
             },
@@ -73,7 +81,15 @@ export function createStore() : Store<State>{
             setCoords(state : State,value : GeolocationCoordinates){
                 state.mapInfo.coords = value;
                 console.log("Set position")
-            }
+            },
+            clearRole (state : State) {
+                (<UserInfoModel>state.loginModel.currentUser).roleList = new Array<Role>();
+                console.log("Clear Role list " )
+            },
+            searchService (state : State,value : SearchServiceDto) {
+                state.searchDto.searchService = value;
+                console.log("Set service search " )
+            },
         },
         getters: {
             user: state => {
@@ -84,6 +100,9 @@ export function createStore() : Store<State>{
             },
             company: state => {
                 return state.loginModel.currentUser?.employee?.company;
+            },
+            searchService: state => {
+                return state.searchDto.searchService;
             }
         }
     });

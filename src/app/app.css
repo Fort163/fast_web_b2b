@@ -65,6 +65,7 @@ All application class
     display: flex;
     align-items: center;
     justify-items: center;
+    overflow-x: hidden;
 }
 
 .button-default-press{
@@ -103,4 +104,32 @@ All application class
     color: ghostwhite;
     border-radius: 25px;
     box-shadow:0 0 30px #ff6f83;
+}
+
+.text-field{
+    width: 80%;
+    min-height: 65px;
+    font-size: 30px;
+    font-family: cursive;
+    color: dodgerblue;
+    border: none;
+    border-bottom: 2px groove dodgerblue;
+}
+
+.text-field:focus{
+    outline: none;
+}
+
+.h-layout{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+}
+
+.v-layout{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }

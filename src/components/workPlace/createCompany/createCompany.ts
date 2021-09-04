@@ -15,7 +15,7 @@ import {
     State,
     TableColumnItem,
     TableData,
-    TableSettings, TransientValue
+    TableSettings, TransientValue, UserInfoModel
 } from "@/store/model";
 import {GeocoderResult, GeocoderResultDefault} from "@/structure/map/ymapsModel";
 import {FastWebApi} from "@/components/api/fastWebApi";
@@ -77,11 +77,14 @@ class SaveCompany extends Handler<undefined, undefined, void> {
         flag.then((item : boolean)=> {
             if(item){
                 this.store.commit('setModalWindow', new class implements ModalWindow {
-                    message: string | null = 'Компания успешно сохранена. Зайдите в систему повторно чтобы изменения вступили в силу.';
+                    message: string | null = 'Компания успешно сохранена.';
                     show : boolean = true;
                 });
-                this.store.commit('login',null);
-                this.store.commit('setCurrentUser',null);
+                this.store.commit('setCurrentMenuItem',null);
+                const userPromise = this.api?.getApi<UserInfoModel>('/user/me');
+                userPromise?.then((user:UserInfoModel)=> {
+                    this.store.commit('setCurrentUser',user);
+                });
             }
         });
     }

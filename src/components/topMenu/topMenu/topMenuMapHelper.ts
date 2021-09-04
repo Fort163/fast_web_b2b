@@ -10,7 +10,7 @@ export interface TopMenuModel {
 export class ComboboxTopMenu implements ComboboxModel{
     id: Number;
     name: String;
-    permission: String;
+    permission: String | null;
     constructor(item:PermissionModel) {
         this.id = item.id;
         this.name = item.displayName;

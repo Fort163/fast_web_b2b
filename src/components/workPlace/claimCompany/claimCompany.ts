@@ -113,6 +113,7 @@ export default class ClaimCompany extends Vue {
                     show : boolean = true;
                 });
                 this.$store.commit('setCurrentMenuItem',null);
+                this.$store.commit('clearRole');
             }
         });
     }

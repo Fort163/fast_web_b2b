@@ -12,6 +12,9 @@ import {FastWebApi} from "@/components/api/fastWebApi";
 export default class Employees extends Vue {
     @Inject('api') api: FastWebApi | undefined;
 
-
+    get frame(){
+        //return "http://localhost:8082?companyId="+this.$store.getters.company?.id;
+        return '<iframe width="100%" height="60%" src="https://quick-peter-calendar.ru/?companyId='+this.$store.getters.company?.id+'"></iframe>';
+    }
 
 }

@@ -3,7 +3,7 @@ import {Inject, Watch} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 import Component from "vue-class-component";
 import {FastWebApi} from "@/components/api/fastWebApi";
-import {ComboboxModel, NotificationModel, PermissionModel, SimpleValue} from "@/store/model";
+import {ComboboxModel, NotificationModel, PermissionModel, SimpleValue, UserInfoModel} from "@/store/model";
 
 class NotificationItem {
     id: number;
@@ -91,8 +91,10 @@ export default class BottomMenu extends Vue {
 
         if(slice.permission.startsWith("FUNC_")){
             if(slice.permission === "FUNC_LOGOUT"){
-                this.$store.commit('login',null);
-                this.$store.commit('setCurrentUser',null);
+                const userPromise = this.api?.getApi<UserInfoModel>('/user/me');
+                userPromise?.then((user:UserInfoModel)=> {
+                    this.$store.commit('setCurrentUser',user);
+                });
             }
         }
         else {

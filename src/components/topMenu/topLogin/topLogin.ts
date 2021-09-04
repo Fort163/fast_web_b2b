@@ -28,9 +28,8 @@ export default class TopMenu extends Vue {
         this.$store.commit('setCurrentUser',null);
     }
 
-    //TODO
     public settings() {
-
+        this.$store.commit('setCurrentMenuItem',null);
     }
 
 }

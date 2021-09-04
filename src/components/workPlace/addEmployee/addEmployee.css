@@ -1,9 +1,10 @@
 .addEmployeeMain{
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 95%;
     margin-top: 30px;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .employeeItems{

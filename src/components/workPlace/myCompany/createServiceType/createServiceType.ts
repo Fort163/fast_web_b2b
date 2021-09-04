@@ -89,8 +89,8 @@ export default class CreateServiceType extends Vue {
         this.initColumn();
         const simpleValue = new SimpleValue();
         simpleValue.valueLong = this.$store.getters.company?.id;
-        const activities : Promise<Array<ServiceTypeModel>> = <Promise<Array<ServiceTypeModel>>>this.api?.postApi<Array<ServiceTypeModel>>("/company/get/serviceType",simpleValue);
-        activities.then((items:Array<ServiceTypeModel>)=> {
+        const serviceTypes : Promise<Array<ServiceTypeModel>> = <Promise<Array<ServiceTypeModel>>>this.api?.postApi<Array<ServiceTypeModel>>("/company/get/serviceType",simpleValue);
+        serviceTypes.then((items:Array<ServiceTypeModel>)=> {
             items.forEach(item =>{
                 this.serviceTypeData.push(item);
             })

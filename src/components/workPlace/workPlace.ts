@@ -10,6 +10,8 @@ import {Inject} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 import AddEmployee from "@/components/workPlace/addEmployee/AddEmployee.vue";
 import MyCompany from "@/components/workPlace/myCompany/MyCompany.vue";
+import SettingsWindow from "@/components/workPlace/settingsWindow/SettingsWindow.vue";
+import SeeClaimService from "@/components/workPlace/seeClaimService/SeeClaimService.vue";
 
 @Component({
     components: {
@@ -19,7 +21,9 @@ import MyCompany from "@/components/workPlace/myCompany/MyCompany.vue";
         CreateActivity,
         ClaimCompany,
         AddEmployee,
-        MyCompany
+        MyCompany,
+        SettingsWindow,
+        SeeClaimService
     }
 
 })
@@ -31,8 +35,12 @@ export default class WorkPlace extends Vue {
         return this.socketMain?.socket
     }
 
-    get currentFrame() : String | undefined{
+    get currentFrame() : String | undefined | null{
         return this.state?.currentMenuItem?.permission;
+    }
+
+    get haveEmployee() : boolean{
+        return !!this.$store.getters.employee
     }
 
 }

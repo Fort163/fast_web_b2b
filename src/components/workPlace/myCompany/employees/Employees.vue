@@ -1,6 +1,7 @@
 <template>
   <div :class="'mainEmployees'">
     Сотрудники в разработке
+    {{this.frame}}
   </div>
 </template>
 

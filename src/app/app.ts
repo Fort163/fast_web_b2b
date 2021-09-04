@@ -25,6 +25,10 @@ Vue.use(Vuex)
 })
 export default class App extends Vue {
     @Provide('state') mainState: State = this.state;
+    //WORK
+    /*@Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",'https://quick-peter-b2b.ru',this.$store);
+    @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",'https://quick-peter-b2b.ru/b2b/fast-web-websocket',this.$store);*/
+    //TEST
     @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",'http://localhost:8080',this.$store);
     @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",'http://localhost:8080/b2b/fast-web-websocket',this.$store);
 
@@ -46,6 +50,7 @@ export default class App extends Vue {
             });
             this.socket.accessToken = accessToken;
             this.socket.connect();
+            //window.history.replaceState({}, document.title, "https://quick-peter-b2c.ru/");
             window.history.replaceState({}, document.title, "http://localhost:8081/");
         }
     }

@@ -9,7 +9,10 @@ import Vue from "vue";
 export default class Statistic extends Vue {
 
     get companyId(){
+        //TEST
         return "http://localhost:8082?companyId="+this.$store.getters.company?.id;
+        //WORK
+        //return "https://quick-peter-calendar.ru?companyId="+this.$store.getters.company?.id;
     }
 
 }

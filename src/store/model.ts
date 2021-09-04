@@ -6,6 +6,7 @@ export interface State{
     mapInfo : MapInfo,
     currentMenuItem: ComboboxTopMenu | null,
     mask : MaskModel
+    searchDto : SearchDto
 }
 
 export interface LoginInfoModel{
@@ -90,8 +91,11 @@ export interface NotificationModel{
     shown: boolean
 }
 
-export interface ServiceModel{
-    /*TODO*/
+export interface ServiceModel extends DateModel{
+    time : DateTimeModel,
+    client : ClientDto,
+    employee : EmployeeModel,
+    serviceTypeDto : ServiceTypeModel
 }
 
 export interface MapInfo{
@@ -376,4 +380,46 @@ export class MapDto{
         return json;
     }
 
+}
+
+export class ChangeUserDto {
+    phoneNumber : string | null;
+    firstName : string | null;
+    lastName : string | null;
+    constructor(phoneNumber : string | null,firstName : string | null,lastName : string | null) {
+        this.phoneNumber = phoneNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+
+export interface AnswerModel{
+    result : boolean,
+    message : string,
+    code : number
+}
+
+export class ClientDto{
+    id : number | null = null;
+    name : string;
+    phone : string;
+    constructor(name : string,phone : string) {
+        this.name = name;
+        this.phone = phone;
+    }
+}
+
+export class SearchServiceDto{
+    id = 1;
+    companyId : Number | null = null;
+    employeeId : Number | null = null;
+    serviceTypeId : Number | null = null;
+    periodFrom : string | null = null;
+    periodTo : string | null = null;
+    clientPhone : string | null = null;
+    isNew : boolean = true;
+}
+
+export class SearchDto{
+    searchService : SearchServiceDto = new SearchServiceDto();
 }

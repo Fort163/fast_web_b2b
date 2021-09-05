@@ -3,7 +3,7 @@
     <div :class="'selectMenu'">
       <transition-group :class="'selectItems'" name="selectAnimation" tag="div">
         <div v-for="(item,index) in currentItems" :style="{width:selectWidth}" :class="'selectItem'" :key="item.id">
-          <div :class="'selectItemValue'">{{item.name}}</div>
+          <div v-if="!clear" :class="'selectItemValue'">{{item.name}}</div>
           <div v-if="!singleValue" :class="'selectItemButton'" :title="'Удалить'" @click="deleteCurrentItems(index)"/>
         </div>
       </transition-group>

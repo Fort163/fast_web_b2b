@@ -9,7 +9,7 @@ import {
     ModalWindow,
     ScheduleModel, ServiceModel, ServiceTypeModel, SimpleValue,
     State, TableColumnItem, TableData, TableSettings,
-    TransientValue
+    TransientValue, UserInfoModel
 } from "@/store/model";
 import {FastWebApi} from "@/components/api/fastWebApi";
 import {Store} from "vuex";
@@ -31,6 +31,7 @@ class Employee implements EmployeeModel{
     vacationTo: string | null = null;
     schedulesList : Array<ScheduleModel> = new Array<ScheduleModel>();
     serviceTypeList : Array<ServiceTypeModel> = new Array<ServiceTypeModel>();
+    user : UserInfoModel | null = null;
     constructor() {}
 }
 

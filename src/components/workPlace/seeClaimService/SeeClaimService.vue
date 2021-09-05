@@ -1,7 +1,11 @@
 <template>
-  <div :class="'main-see-claim-service'" :style="{width:'100%',height:'300px'}">
-    <SearchService></SearchService>
-    <TableCustom :tableSettings="this.settings"></TableCustom>
+  <div :class="'main-see-claim-service'">
+    <div :class="'main-see-claim-search'">
+      <SearchService/>
+    </div>
+    <div :class="'main-see-claim-table'">
+      <TableCustom :tableSettings="this.settings"/>
+    </div>
   </div>
 </template>
 

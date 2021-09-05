@@ -3,11 +3,11 @@
     <div class="search-block">
       <div class="search-combo" v-if="showEmployee" :style="{width:getWidthCombo}">
         <label class="comboLabel">Сотрудник</label>
-        <SelectBox :model="comboEmployee" :value="this.selectEmployee" :singleValue="true" class="comboBox"/>
+        <SelectBox :model="comboEmployee" :value="this.selectEmployee" :needClear="needClear" :singleValue="true" class="comboBox"/>
       </div>
       <div class="search-combo" :style="{width:getWidthCombo}">
         <label class="comboLabel">Вид услуги</label>
-        <SelectBox :model="comboServiceType" :value="this.selectServiceType" :singleValue="true" :class="'comboBox'"/>
+        <SelectBox :model="comboServiceType" :value="this.selectServiceType" :singleValue="true" :needClear="needClear" :class="'comboBox'"/>
       </div>
     </div>
     <div class="search-block">
@@ -24,9 +24,18 @@
         <input class="text-field search-phone" v-model="phone" type="number" />
       </div>
     </div>
-    <button :class="'button-default'" :style="{fontSize : '20px',width : '150px',marginLeft : '15px'}" @click="search()">
-      Поиск
-    </button>
+    <div class="search-button-block">
+      <div class="search-button">
+        <button :class="'button-default'" :style="{fontSize : '20px',width : '150px',marginLeft : '15px'}" @click="search()">
+          Поиск
+        </button>
+      </div>
+      <div class="clear-button">
+        <button :class="'button-danger'" :style="{fontSize : '20px',width : '160px',marginRight : '35px'}" @click="clear()">
+          Очистить
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 

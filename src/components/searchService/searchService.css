@@ -55,3 +55,20 @@
     font-family: cursive;
     border: 2px groove dodgerblue;
 }
+
+.search-button-block{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.search-button{
+    display: flex;
+    width: 50%;
+}
+
+.clear-button{
+    display: flex;
+    width: 50%;
+    flex-direction: row-reverse;
+}

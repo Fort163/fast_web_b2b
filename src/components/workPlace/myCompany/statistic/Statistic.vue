@@ -1,7 +1,11 @@
 <template>
   <div :class="'mainStatistic'">
-      Статистика в разработке
-    <iframe width="100%" height="60%" :src="this.companyId"></iframe>
+    <div :class="'mainStatistic-search'">
+      <SearchService/>
+    </div>
+    <div :class="'mainStatistic-table'">
+      <TableCustom :tableSettings="this.settings"/>
+    </div>
   </div>
 </template>
 

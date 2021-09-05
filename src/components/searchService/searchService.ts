@@ -22,6 +22,7 @@ export default class SearchService extends Vue {
     private selectServiceTypeValue : Array<ComboboxModel> = new Array<ComboboxModel>();
     private companyId : number | null = null;
     private isEmployee = false;
+    private clearValue = false;
 
     mounted(){
         this.isEmployee = this.state?.currentMenuItem?.permission === 'ROLE_SEE_CLAIM_SERVICE';
@@ -41,6 +42,12 @@ export default class SearchService extends Vue {
                     this.employee.push(item);
                 })
             });
+        }
+        else{
+            this.dto.companyId = this.companyId;
+            this.dto.employeeId = this.$store.getters.employee.id
+            this.dto.id = this.dto.id+1;
+            this.$store.commit('searchService',this.dto);
         }
     }
 
@@ -92,9 +99,11 @@ export default class SearchService extends Vue {
         this.dto.clientPhone = value;
     }
 
+    get needClear() :boolean{
+        return this.clearValue;
+    }
+
     public search(){
-        let oldDateFrom = '';
-        let oldDateTo = '';
         this.dto.companyId = this.companyId;
         const employee = this.selectEmployeeValue.slice(0,1)[0];
         if(employee){
@@ -109,23 +118,17 @@ export default class SearchService extends Vue {
         if(serviceType){
             this.dto.serviceTypeId = serviceType.id;
         }
-        if(this.dto.periodFrom){
-            oldDateFrom = this.dto.periodFrom;
-            this.dto.periodFrom = this.formatDate(this.dto.periodFrom);
-        }
-        if(this.dto.periodTo){
-            oldDateTo = this.dto.periodTo;
-            this.dto.periodTo = this.formatDate(this.dto.periodTo);
-        }
         this.dto.id = this.dto.id+1;
         this.$store.commit('searchService',this.dto);
-        this.dto.periodFrom = oldDateFrom;
-        this.dto.periodTo = oldDateTo;
     }
 
-    private formatDate(value : string) : string{
-        const split = value.split('-');
-        return split[2]+'.'+split[1]+'.'+split[0];
+    public clear(){
+        this.clearValue = true;
+        this.dto = new SearchServiceDto();
+        setTimeout(() => {
+            this.clearValue = false;
+        }, 500)
+
     }
 
 }

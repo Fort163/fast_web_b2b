@@ -11,6 +11,7 @@ export default class SelectBox extends Vue {
     @Prop() model: Array<ComboboxModel> | undefined;
     @Prop() value: Array<ComboboxModel>| undefined;
     @Prop() singleValue: boolean | undefined;
+    @Prop() needClear: boolean | undefined;
     private storeRepository: Array<ComboboxModel> = new Array<ComboboxModel>();
     private storeItem: Array<ComboboxModel> = new Array<ComboboxModel>();
     private show : boolean = false;
@@ -45,6 +46,13 @@ export default class SelectBox extends Vue {
                 return
             });
         }
+    }
+
+    get clear() : boolean | undefined{
+        if(this.needClear){
+            this.clearValue();
+        }
+        return this.needClear;
     }
 
     get isSingleValue() : boolean{
@@ -137,6 +145,14 @@ export default class SelectBox extends Vue {
         const slice = <ComboboxModel>this.value?.splice(value,1).pop();
         this.storeItems?.push(slice);
         this.show = true;
+    }
+
+    public clearValue(){
+        this.fillStore();
+        this.value?.splice(0).forEach(item => {
+            this.storeItems?.push(item);
+        })
+        this.closeStore();
     }
 
 }

@@ -77,6 +77,7 @@ export interface EmployeeModel extends TableData{
     schedulesList : Array<ScheduleModel> | null,
     serviceList : Array<ServiceModel> | null,
     serviceTypeList : Array<ServiceTypeModel> | null,
+    user : UserInfoModel | null,
     showClient : boolean,
     vacationFrom : string | null,
     vacationTo : string | null
@@ -91,7 +92,7 @@ export interface NotificationModel{
     shown: boolean
 }
 
-export interface ServiceModel extends DateModel{
+export interface ServiceModel extends TableData{
     time : DateTimeModel,
     client : ClientDto,
     employee : EmployeeModel,

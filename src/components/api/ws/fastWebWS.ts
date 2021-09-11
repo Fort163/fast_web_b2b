@@ -26,9 +26,14 @@ export class FastWebWS {
     private _socket : Client | null = null;
     private _isConnect = false;
 
-    constructor(accessToken:string,URL:string,store: Store<any>) {
+    constructor(accessToken:string,isProd:boolean,store: Store<any>) {
         this._accessToken = accessToken;
-        this._URL = URL;
+        if(isProd){
+            this._URL = 'https://quick-peter-b2b.ru/b2b/fast-web-websocket';
+        }
+        else {
+            this._URL = 'http://localhost:8080/b2b/fast-web-websocket';
+        }
         this.store = store;
     }
 

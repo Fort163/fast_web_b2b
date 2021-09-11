@@ -24,6 +24,7 @@
     width: 64px;
     height: 64px;
     border: none;
+    cursor: pointer;
     background-color: white;
     background-image: url(../../assets/other/to_left-2.png);
     margin: 10px;
@@ -39,6 +40,7 @@
     width: 64px;
     height: 64px;
     border: none;
+    cursor: pointer;
     background-color: white;
     background-image: url(../../assets/other/to_right-2.png);
     margin: 10px;

@@ -65,7 +65,9 @@ All application class
     display: flex;
     align-items: center;
     justify-items: center;
+    cursor: pointer;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .button-default-press{
@@ -94,6 +96,7 @@ All application class
     font-size: 25px;
     padding-left: 40px;
     padding-right: 40px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-items: center;

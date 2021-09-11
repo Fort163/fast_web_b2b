@@ -2,7 +2,15 @@ import Component from "vue-class-component";
 import Vue from "vue";
 import {Inject} from "vue-property-decorator";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
-import {ClaimCompanyRequestModel, DtoWhitLong, ModalWindow, PermissionModel, SimpleValue, State} from "@/store/model";
+import {
+    ClaimCompanyRequestModel,
+    DtoWhitLong,
+    ModalWindow,
+    PermissionModel,
+    Role,
+    SimpleValue,
+    State
+} from "@/store/model";
 import {FastWebApi} from "@/components/api/fastWebApi";
 import WithConfig from "@/components/workPlace/addEmployee/withConfig/WithConfig.vue";
 import WithOutConfig from "@/components/workPlace/addEmployee/withOutConfig/WithOutConfig.vue";
@@ -85,6 +93,10 @@ export default class AddEmployee extends Vue {
 
     set currentFrame(frame : String){
         this.frame = frame;
+    }
+
+    get showOwnerEmployee() : boolean{
+        return this.$store.getters.ownerWithoutService;
     }
 
     public backFrame(){

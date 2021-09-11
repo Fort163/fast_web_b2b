@@ -3,6 +3,9 @@
     <transition name="frame" mode="out-in">
       <div v-if="this.currentFrame === 'MAIN'" :class="'addEmployeeMain'" :key="'MAIN'">
         <h1>Выбирите действие</h1>
+        <button v-if="this.showOwnerEmployee" :class="'button-default'" :style="{fontSize : '25px'}" @click="selectWithConfig(null)">
+          Принимать заявки
+        </button>
         <transition-group :class="'employeeItems'" name="notificationAnimation" tag="div">
           <div :class="'employeeItem'" v-for="item in this.claims" :key="item.id">
             <button :class="'button-danger'" @click="refuse(item)">

@@ -80,7 +80,8 @@ export interface EmployeeModel extends TableData{
     user : UserInfoModel | null,
     showClient : boolean,
     vacationFrom : string | null,
-    vacationTo : string | null
+    vacationTo : string | null,
+    isOwner : boolean | null
 }
 
 export interface NotificationModel{
@@ -423,4 +424,19 @@ export class SearchServiceDto{
 
 export class SearchDto{
     searchService : SearchServiceDto = new SearchServiceDto();
+}
+
+export class Employee implements EmployeeModel{
+    id : number | null = null;
+    name : string | null = null;
+    serviceList: Array<ServiceModel> | null = null;
+    showClient: boolean = true;
+    company: CompanyModel | null = null;
+    vacationFrom: string | null = null;
+    vacationTo: string | null = null;
+    isOwner: boolean = false;
+    schedulesList : Array<ScheduleModel> = new Array<ScheduleModel>();
+    serviceTypeList : Array<ServiceTypeModel> = new Array<ServiceTypeModel>();
+    user : UserInfoModel | null = null;
+    constructor() {}
 }

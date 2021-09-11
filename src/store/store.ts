@@ -92,6 +92,24 @@ export function createStore() : Store<State>{
             },
         },
         getters: {
+            owner: state => {
+                return state.loginModel.currentUser?.employee.isOwner;
+            },
+            ownerWithoutService: state => {
+                const owner : boolean | null | undefined = state.loginModel.currentUser?.employee.isOwner;
+                if(owner){
+                    let flag = true;
+                    (<Array<Role>>state.loginModel.currentUser?.roleList).forEach(item =>{
+                        if(item.name === "EMPLOYEE_CONFIG"){
+                            flag = false;
+                        }
+                    })
+                    return flag;
+                }
+                else {
+                    return false;
+                }
+            },
             user: state => {
                 return state.loginModel.currentUser;
             },

@@ -2,12 +2,9 @@ import Component from "vue-class-component";
 import Vue from "vue";
 import {
     ClaimCompanyRequestModel, ColumnTypes,
-    ComboboxModel,
-    CompanyModel, DayOfWeek, DefaultTableColumnItem, DefaultTableSettings, DtoWhitLong,
-    EmployeeModel,
-    Handler, MapDto,
-    ModalWindow,
-    ScheduleModel, ServiceModel, ServiceTypeModel, SimpleValue,
+    ComboboxModel, DayOfWeek, DefaultTableColumnItem, DefaultTableSettings, DtoWhitLong,
+    EmployeeModel,Handler, Employee,ModalWindow,
+    ScheduleModel, ServiceTypeModel, SimpleValue,
     State, TableColumnItem, TableData, TableSettings,
     TransientValue, UserInfoModel
 } from "@/store/model";
@@ -17,23 +14,10 @@ import {Inject, Prop} from "vue-property-decorator";
 import ButtonFooter from "@/components/buttonFooter/ButtonFooter.vue";
 import SelectBox from "@/components/selectBox/SelectBox.vue";
 import TableCustom from "@/components/table/TableCustom.vue";
-import {GeocoderResult} from "@/structure/map/ymapsModel";
 import {FastWebWS} from "@/components/api/ws/fastWebWS";
 import {Client} from "webstomp-client";
 
-class Employee implements EmployeeModel{
-    id : number | null = null;
-    name : string | null = null;
-    serviceList: Array<ServiceModel> | null = null;
-    showClient: boolean = true;
-    company: CompanyModel | null = null;
-    vacationFrom: string | null = null;
-    vacationTo: string | null = null;
-    schedulesList : Array<ScheduleModel> = new Array<ScheduleModel>();
-    serviceTypeList : Array<ServiceTypeModel> = new Array<ServiceTypeModel>();
-    user : UserInfoModel | null = null;
-    constructor() {}
-}
+
 
 class Schedule implements ScheduleModel{
     id : number | null = null;
@@ -51,6 +35,41 @@ class Schedule implements ScheduleModel{
         this.clockCompanyFrom = model.clockFrom
         this.clockCompanyTo = model.clockTo
     }
+}
+
+class SaveOwner extends Handler<undefined, undefined, void> {
+    private api: FastWebApi;
+    private store: Store<State>;
+    private employee : EmployeeModel;
+    constructor(api: FastWebApi,store: Store<State>,employee : EmployeeModel) {
+        super();
+        this.api = api;
+        this.store = store;
+        this.employee = employee;
+    }
+    function(val1: undefined, val2: undefined): void {
+        const flag : Promise<Number> = <Promise<Number>>this.api?.postApi<Number>("/company/create/employee/owner",this.employee);
+        flag.then((item : Number)=> {
+            if(item){
+                this.store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Информация обновлена';
+                    show : boolean = true;
+                });
+                this.store.commit('setCurrentMenuItem',null);
+                const userPromise = this.api?.getApi<UserInfoModel>('/user/me');
+                userPromise?.then((user:UserInfoModel)=> {
+                    this.store.commit('setCurrentUser',user);
+                });
+            }
+            else{
+                this.store.commit('setModalWindow', new class implements ModalWindow {
+                    message: string | null = 'Произошла ошибка';
+                    show : boolean = true;
+                });
+            }
+        });
+    }
+
 }
 
 class SaveEmployee extends Handler<undefined, undefined, void> {
@@ -180,6 +199,10 @@ export default class WithConfig extends Vue {
     private scheduleColumn : Array<ScheduleColumnItem> = new Array<ScheduleColumnItem>();
 
     created(){
+        if(!this.selectRequest){
+            this.currentEmployee.name = this.$store.getters.employee.name;
+            this.currentEmployee.isOwner = true;
+        }
         this.initScheduleColumn();
         const simpleValue = new SimpleValue();
         simpleValue.valueLong = this.$store.getters.company?.id;
@@ -234,8 +257,13 @@ export default class WithConfig extends Vue {
         return <Array<ComboboxModel>>this.employee.serviceTypeList;
     }
 
-    get requestName() : String | undefined{
-        return this.selectRequest?.user.fullName;
+    get requestName() : String{
+        if(this.selectRequest){
+            return this.selectRequest.user.fullName;
+        }
+        else {
+            return this.$store.getters.user.fullName;
+        }
     }
 
     get step() : string{
@@ -243,7 +271,12 @@ export default class WithConfig extends Vue {
     }
 
     public save() : Handler<undefined, undefined, void>{
-        return new SaveEmployee(<FastWebApi>this.api,this.socketMain,this.$store,this.employee,this.selectRequest?.id);
+        if(this.selectRequest){
+            return new SaveEmployee(<FastWebApi>this.api,this.socketMain,this.$store,this.employee,this.selectRequest?.id);
+        }
+        else {
+            return new SaveOwner(<FastWebApi>this.api,this.$store,this.employee);
+        }
     }
 
     public isDisabled() : Handler<string, undefined, boolean>{

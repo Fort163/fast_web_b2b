@@ -12,14 +12,9 @@ export class FastWebApi implements LoginApi{
     private _URL : string;
     private _accessToken: string;
     private store: Store<any>
-    constructor(accessToken:string,isProd:boolean,store: Store<any>) {
+    constructor(accessToken:string,store: Store<any>) {
         this._accessToken = accessToken;
-        if(isProd){
-            this._URL = 'https://quick-peter-b2b.ru';
-        }
-        else {
-            this._URL = 'http://localhost:8080';
-        }
+        this._URL = process.env.VUE_APP_BASE_URL_B2B;
         this.store = store;
     }
 

@@ -11,8 +11,10 @@ import WorkPlace from "@/components/workPlace/WorkPlace.vue";
 import ModalMask from "@/components/modal/mask/ModalMask.vue";
 import {FastWebWS} from "@/components/api/ws/fastWebWS.ts";
 import BottomMenu from "@/components/bottomMenu/BottomMenu.vue";
+import VueCookies from "vue-cookies";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+Vue.use(VueCookies);
 @Component({
     components: {
         ModalMask,
@@ -26,19 +28,18 @@ Vue.use(Vuex)
 export default class App extends Vue {
     @Provide('state') mainState: State = this.state;
     @Provide('isProd') isProd : boolean = false;
-    @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",this.isProd,this.$store);
-    @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",this.isProd,this.$store);
+    @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",this.$store);
+    @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",this.$store);
 
     mounted(){
+        console.log(process.env);
         navigator.geolocation.getCurrentPosition((pos : GeolocationPosition) => {
             this.$store.commit('setCoords',pos.coords);
         }, err => {
             console.error("Position user not set");
         })
-        const params :string = window.location.search
-        const number :number = params.indexOf("?accessToken=");
-        if (number > -1) {
-            const accessToken = params.substring(params.indexOf("=") + 1);
+        const accessToken = this.$cookies.get("access_token");
+        if (accessToken) {
             this.$store.commit('login',accessToken);
             this.api.accessToken = accessToken;
             const userPromise = this.api.getApi<UserInfoModel>('/user/me');
@@ -47,13 +48,8 @@ export default class App extends Vue {
             });
             this.socket.accessToken = accessToken;
             this.socket.connect();
-            if(this.isProd){
-                window.history.replaceState({}, document.title, "https://quick-peter-b2c.ru/");
-            }
-            else {
-                window.history.replaceState({}, document.title, "http://localhost:8081/");
-            }
-
+            this.$cookies.remove("access_token");
+            window.history.replaceState({}, document.title, process.env.VUE_APP_BASE_URL_APP);
         }
     }
 

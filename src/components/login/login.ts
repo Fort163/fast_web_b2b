@@ -7,7 +7,16 @@ import Vue from "vue";
 })
 export default class Login extends Vue {
 
-    public tryLogin(url : string) {
-        window.location.href = url;
+    public tryLoginGoogle() {
+        window.location.href = this.createUrl(process.env.VUE_APP_OAUTH_GOOGLE);
     }
+
+    public tryLoginYandex() {
+        window.location.href = this.createUrl(process.env.VUE_APP_OAUTH_YANDEX);
+    }
+
+    private createUrl(oauthUrl: string): string {
+        return process.env.VUE_APP_BASE_URL_B2B + oauthUrl + '?redirect_uri=' + process.env.VUE_APP_BASE_URL_APP + process.env.VUE_APP_REDIRECT_URL;
+    }
+
 }

@@ -27,7 +27,6 @@ Vue.use(VueCookies);
 })
 export default class App extends Vue {
     @Provide('state') mainState: State = this.state;
-    @Provide('isProd') isProd : boolean = false;
     @Provide('api') mainApi: FastWebApi = new FastWebApi("accessToken",this.$store);
     @Provide('socket') mainSocket: FastWebWS = new FastWebWS("accessToken",this.$store);
 
@@ -49,7 +48,7 @@ export default class App extends Vue {
             this.socket.accessToken = accessToken;
             this.socket.connect();
             this.$cookies.remove("access_token");
-            window.history.replaceState({}, document.title, process.env.VUE_APP_BASE_URL_APP);
+            window.history.replaceState({}, document.title, process.env.VUE_APP_BASE_URL_B2B);
         }
     }
 

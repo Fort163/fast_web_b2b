@@ -103,16 +103,10 @@ class DisableStep extends Handler<string, undefined, boolean> {
                 return false;
             }
         }
-        if(step === 'Step_2'){
-            if(this.company.schedulesList){
-                let flag = true;
-                this.company.schedulesList.forEach(item => {
-                    if(item.work && this.checkClock(item.clockFrom,item.clockTo)){
-                        flag = false;
-                    }
-                })
-                return flag;
-            }
+        if (step === 'Step_2' && this.company.schedulesList) {
+            const workArray = this.company.schedulesList.filter(item => item.work);
+            const workArrayWithError = this.company.schedulesList.filter(item => item.work && !this.checkClock(item.clockFrom, item.clockTo));
+            return workArray.length == 0 || workArrayWithError.length > 0;
         }
         if(step === 'Step_3'){
             if(this.company.geoPosition){

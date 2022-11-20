@@ -53,9 +53,11 @@ class ServiceTypeSave extends Handler<undefined, undefined, void>{
     }
     function(): void {
         const data = new ListWhitLong(this.settings.data,this.store.getters.company?.id);
-        const result : Promise<boolean> = this.api.postApi<boolean>("/company/create/serviceType",data);
-        result.then(res =>{
+        const result : Promise<Array<ServiceTypeModel>> = this.api.postApi<Array<ServiceTypeModel>>("/company/create/serviceType",data);
+        result.then(res => {
             if(res) {
+                this.settings.data.splice(0, this.settings.data.length)
+                res.forEach(item => this.settings.data.push(item))
                 this.store.commit('setModalWindow', new class implements ModalWindow {
                     message: string | null = 'Типы услуг успешно сохранены';
                     show : boolean = true;

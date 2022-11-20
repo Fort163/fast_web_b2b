@@ -16,7 +16,7 @@ export default class Login extends Vue {
     }
 
     private createUrl(oauthUrl: string): string {
-        return process.env.VUE_APP_BASE_URL_B2B + oauthUrl + '?redirect_uri=' + process.env.VUE_APP_BASE_URL_APP + process.env.VUE_APP_REDIRECT_URL;
+        return process.env.VUE_APP_BASE_URL_SERVER_B2B + oauthUrl + '?redirect_uri=' + process.env.VUE_APP_BASE_URL_B2B + process.env.VUE_APP_REDIRECT_URL;
     }
 
 }

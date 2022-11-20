@@ -14,7 +14,7 @@ export class FastWebApi implements LoginApi{
     private store: Store<any>
     constructor(accessToken:string,store: Store<any>) {
         this._accessToken = accessToken;
-        this._URL = process.env.VUE_APP_BASE_URL_B2B;
+        this._URL = process.env.VUE_APP_BASE_URL_SERVER_B2B;
         this.store = store;
     }
 

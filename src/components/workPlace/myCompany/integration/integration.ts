@@ -10,7 +10,6 @@ import {FastWebApi} from "@/components/api/fastWebApi";
     }
 })
 export default class Integration extends Vue {
-    @Inject('isProd') isProd: boolean | undefined;
     @Inject('api') api: FastWebApi | undefined;
     private style : string = 'white';
 
@@ -23,14 +22,7 @@ export default class Integration extends Vue {
     }
 
     get src(){
-        if(this.isProd){
-            //WORK
-            return "https://quick-peter-calendar.ru?companyId="+this.$store.getters.company?.id+"&"+this.style;
-        }
-        else{
-            //TEST
-            return "http://localhost:8082?companyId="+this.$store.getters.company?.id+"&"+this.style;
-        }
+        return process.env.VUE_APP_BASE_URL_CALENDAR+"?companyId="+this.$store.getters.company?.id+"&style="+this.style;
     }
 
     get frame(){

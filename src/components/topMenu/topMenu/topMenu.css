@@ -21,9 +21,17 @@
     flex-direction: row;
     color: #96a1a2;
     font-family: cursive;
-    font-size: xxx-large;
+    font-size: 3em;
     align-items: center;
     justify-content: center;
+}
+
+.topText{
+    width: 1000px;
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .labelAnimation-enter-active,.labelAnimation-leave-active {

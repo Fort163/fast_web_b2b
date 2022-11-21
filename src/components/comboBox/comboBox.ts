@@ -14,10 +14,16 @@ export default class ComboBox extends Vue {
             return;
         }
         this.enter = value;
-        if(value && this.comboItem.length == 0)
-            this.addItems();
-        else
-            this.dropItems();
+        this.updateItem();
+    }
+
+    public updateItem(){
+        this.wait(300).then(() => {
+            if(this.enter && this.comboItem.length == 0)
+                this.addItems();
+            else
+                this.dropItems();
+        })
     }
 
     public addItems(){
@@ -34,6 +40,10 @@ export default class ComboBox extends Vue {
 
     public clickFunc(value : ComboboxModel){
         this.func?.function(value);
+    }
+
+    public wait(time : number) {
+        return new Promise(resolve => setTimeout(resolve, time));
     }
 
 }

@@ -2,9 +2,10 @@
     <div class="topMenuLogin">
       <div class="loginInfo">
         <img class="photo" alt="No photo" :src="this.userpic">
-        <div>{{this.welcome}}</div>
-        <div>{{this.employeeName}}</div>
-        <div>{{this.companyName}}</div>
+        <div class="loginRow"><p class="loginText">Добро пожаловать,</p></div>
+        <div class="loginRow"><p class="loginText">{{this.welcome}}</p></div>
+        <div class="loginRow"><p class="loginText">{{this.employeeName}}</p></div>
+        <div class="loginRow"><p class="loginText">{{this.companyName}}</p></div>
       </div>
       <div class="loginButtons">
         <button class="exit-button" @click="logout"></button>

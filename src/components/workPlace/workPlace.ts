@@ -12,6 +12,7 @@ import AddEmployee from "@/components/workPlace/addEmployee/AddEmployee.vue";
 import MyCompany from "@/components/workPlace/myCompany/MyCompany.vue";
 import SettingsWindow from "@/components/workPlace/settingsWindow/SettingsWindow.vue";
 import SeeClaimService from "@/components/workPlace/seeClaimService/SeeClaimService.vue";
+import FixPartTime from "@/components/workPlace/fixPartTime/FixPartTime.vue";
 
 @Component({
     components: {
@@ -23,7 +24,8 @@ import SeeClaimService from "@/components/workPlace/seeClaimService/SeeClaimServ
         AddEmployee,
         MyCompany,
         SettingsWindow,
-        SeeClaimService
+        SeeClaimService,
+        FixPartTime
     }
 
 })

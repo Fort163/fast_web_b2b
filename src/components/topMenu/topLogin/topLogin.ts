@@ -12,7 +12,7 @@ export default class TopMenu extends Vue {
     }
 
     get welcome() : String | undefined{
-        return "Добро пожаловать, "+this.$store.getters.user?.fullName;
+        return this.$store.getters.user?.fullName;
     }
 
     get companyName(){

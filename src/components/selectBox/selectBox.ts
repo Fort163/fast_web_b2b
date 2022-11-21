@@ -84,20 +84,26 @@ export default class SelectBox extends Vue {
         this.storeRepository=value;
     }
 
-    get isShow() : boolean{
+    public getShow() : boolean{
         return this.show;
     }
 
-    set isShow(value : boolean){
+    public setShow(value : boolean){
         if(this.show===value)
             return;
         this.show = value;
-        if(value){
-            this.showStore();
-        }
-        else {
-            this.closeStore();
-        }
+        this.updateStore(value)
+    }
+
+    public updateStore(value : boolean){
+        this.wait(300).then(() => {
+            if(value && this.show){
+                this.showStore();
+            }
+            else {
+                this.closeStore();
+            }
+        })
     }
 
     get selectWidth() : string{
@@ -154,5 +160,12 @@ export default class SelectBox extends Vue {
         })
         this.closeStore();
     }
+
+    public wait(time : number) {
+        return new Promise(resolve => {
+            setTimeout(resolve, time)
+        });
+    }
+
 
 }

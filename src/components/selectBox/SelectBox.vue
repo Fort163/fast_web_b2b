@@ -1,5 +1,5 @@
 <template>
-  <div :class="'mainSelectBox'" @mouseleave="isShow=false" @mousemove="isShow=true">
+  <div :class="'mainSelectBox'" @mousemove="setShow(true)" @mouseleave="setShow(false)">
     <div :class="'selectMenu'">
       <transition-group :class="'selectItems'" name="selectAnimation" tag="div">
         <div v-for="(item,index) in currentItems" :style="{width:selectWidth}" :class="'selectItem'" :key="item.id">

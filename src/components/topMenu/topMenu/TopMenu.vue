@@ -7,7 +7,7 @@
       <ComboBox v-if="this.showOther" :style="{width: this.sizeCombo+'%'}" :title="'Разное'" :items="this.topMenu.other" :func="this.handler"></ComboBox>
     </div>
     <transition name="labelAnimation" mode="out-in">
-      <div class="topSelect" :key="this.item()">{{this.item()}}</div>
+      <div class="topSelect" :key="this.item()"><p class="topText">{{this.item()}}</p></div>
     </transition>
   </div>
 </template>

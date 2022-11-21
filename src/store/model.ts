@@ -440,3 +440,8 @@ export class Employee implements EmployeeModel{
     user : UserInfoModel | null = null;
     constructor() {}
 }
+
+export class PeriodDto{
+    from : string | null = null;
+    to : string | null = null;
+}

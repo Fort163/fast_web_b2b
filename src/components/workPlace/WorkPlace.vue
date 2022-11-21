@@ -10,6 +10,7 @@
       <AddEmployee v-if="this.currentFrame==='ROLE_ADD_EMPLOYEE'" :key="'addEmployee'"></AddEmployee>
       <MyCompany v-if="this.currentFrame==='ROLE_MY_COMPANY'" :key="'myCompany'"></MyCompany>
       <SeeClaimService v-if="this.currentFrame==='ROLE_SEE_CLAIM_SERVICE'" :key="'seeClaimService'"></SeeClaimService>
+      <FixPartTime v-if="this.currentFrame==='ROLE_FIX_PART_TIME'" :key="'fixPartTime'"></FixPartTime>
     </transition>
   </div>
 </template>

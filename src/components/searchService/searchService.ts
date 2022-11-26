@@ -128,7 +128,8 @@ export default class SearchService extends Vue {
         setTimeout(() => {
             this.clearValue = false;
         }, 500)
-
+        this.dto.companyId = this.companyId;
+        this.$store.commit('searchService',this.dto);
     }
 
 }

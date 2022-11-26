@@ -183,12 +183,16 @@ export abstract class Handler<F,S,R> {
 export abstract class DefaultTableColumnItem implements TableColumnItem{
     itemType : ColumnTypes = ColumnTypes.text;
     width : String | undefined =  undefined;
-    restriction : Handler<any, TableData, boolean> | undefined = undefined;
-    errorMessage: String | undefined = undefined;
+    restrictions : Array<Restriction> | undefined = undefined;
     comboData: Array<ComboboxModel> | undefined = undefined;
     abstract mandatory : boolean;
     abstract itemName: String;
     abstract title: String;
+}
+
+export abstract class Restriction{
+    abstract restriction: Handler<any, TableData, boolean> | undefined
+    abstract errorMessage: String
 }
 
 export interface TableColumnItem {
@@ -196,8 +200,7 @@ export interface TableColumnItem {
     itemName: String,
     itemType: ColumnTypes,
     mandatory: boolean,
-    errorMessage: String | undefined,
-    restriction: Handler<any, TableData, boolean> | undefined,
+    restrictions: Array<Restriction> | undefined,
     width: String | undefined,
     comboData: Array<ComboboxModel> | undefined,
 }

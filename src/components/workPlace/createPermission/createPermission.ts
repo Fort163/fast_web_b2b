@@ -5,7 +5,7 @@ import {
     DefaultTableColumnItem,
     DefaultTableSettings,
     Handler, ModalWindow,
-    PermissionModel,
+    PermissionModel, Restriction,
     State,
     TableColumnItem,
     TableData, TableSettings
@@ -136,7 +136,9 @@ export default class CreatePermission extends Vue {
         const company = new PermissionColumnItem("company","Моя компания",false,ColumnTypes.checkbox,'12%');
         const service = new PermissionColumnItem("service","Мои заказы",false,ColumnTypes.checkbox,'12%');
         const other = new PermissionColumnItem('other','Разное',false,ColumnTypes.checkbox,'12%');
-        permission.restriction = new class extends Handler<any, TableData, boolean> {
+        permission.restrictions = new Array<Restriction>()
+        const message = 'Разрешение не должно быть пустым и должно начинаться с "ROLE_"'
+        const restriction : Handler<any, TableData, boolean> = new class extends Handler<any, TableData, boolean> {
             function(val: any,dataItem : TableData): boolean {
                 const value = <String>val;
                 if(!value || value.length === 0){
@@ -149,8 +151,13 @@ export default class CreatePermission extends Vue {
                     return true;
                 }
             }
-        }
-        permission.errorMessage = 'Разрешение не должно быть пустым и должно начинаться с "ROLE_"'
+        };
+        permission.restrictions.push(
+            new class extends Restriction {
+                restriction = restriction
+                errorMessage = message
+            }
+        )
         this.columns.push(permission,displayName,admin,company,service,other);
     }
 

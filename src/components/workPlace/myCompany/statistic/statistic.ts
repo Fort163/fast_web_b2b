@@ -7,7 +7,7 @@ import {FastWebApi} from "@/components/api/fastWebApi";
 import {
     ColumnTypes,
     DefaultTableColumnItem,
-    DefaultTableSettings, Handler,
+    DefaultTableSettings, Handler, SearchDto,
     ServiceModel,
     State,
     TableColumnItem, TableData,
@@ -75,7 +75,14 @@ export default class Statistic extends Vue {
     private currentSearch = this.$store.getters.searchService.id;
 
     mounted(){
-        this.initColumn();
+        this.$store.getters.searchService.companyId = this.$store.getters.company.id;
+        const services: Promise<Array<ServiceModel>> = <Promise<Array<ServiceModel>>>this.api?.postApi<Array<ServiceModel>>("/employee/service",this.$store.getters.searchService);
+        services.then((items: Array<ServiceModel>) => {
+            items.forEach(item => {
+                this.serviceData.push(new StatisticServiceModel(item));
+            })
+            this.initColumn();
+        });
     }
 
     get settings() : TableSettings{

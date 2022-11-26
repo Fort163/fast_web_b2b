@@ -6,7 +6,7 @@ import {FastWebApi} from "@/components/api/fastWebApi";
 import {
     ColumnTypes, ComboboxModel,
     DefaultTableColumnItem,
-    DefaultTableSettings, Handler, ListWhitLong, ModalWindow, ScheduleModel,
+    DefaultTableSettings, Handler, ListWhitLong, ModalWindow, Restriction, ScheduleModel,
     ServiceTypeModel, SimpleValue,
     State,
     TableColumnItem, TableData, TableSettings
@@ -105,15 +105,28 @@ export default class CreateServiceType extends Vue {
 
     private initColumn() : void{
         const name = new ServiceTypeColumnItem("name","Название",true,ColumnTypes.text,'50%' );
-        name.errorMessage = 'Название обязательно для заполнения';
+        name.restrictions = new Array<Restriction>()
+        name.restrictions.push(
+            new class extends Restriction {
+                restriction = undefined
+                errorMessage = 'Название обязательно для заполнения';
+            }
+        )
         const workClock = new ServiceTypeColumnItem("workClock","Время на работу",true,ColumnTypes.time,'25%' );
-        workClock.errorMessage = 'Укажите время которое занимает эта услуга';
-        workClock.restriction = new class extends Handler<any, TableData, boolean> {
+        workClock.restrictions = new Array<Restriction>()
+        const messageWorkClock = 'Укажите время которое занимает эта услуга';
+        const checkWorkClock = new class extends Handler<any, TableData, boolean> {
             function(val: any,dataItem : ServiceTypeModel): boolean {
                 const clock = dataItem.workClock;
                 return clock > '00:00';
             }
         }
+        workClock.restrictions.push(
+            new class extends Restriction {
+                restriction = checkWorkClock
+                errorMessage = messageWorkClock
+            }
+        )
         const showClient = new ServiceTypeColumnItem("showClient","Показывать клиенту",true,ColumnTypes.checkbox,'25%' );
         this.columns.push(name);
         this.columns.push(workClock);

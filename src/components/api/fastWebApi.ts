@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Store} from "vuex";
-import {LoadMask, ModalWindow} from "@/store/model";
+import {LoadMask} from "@/store/model";
 
 interface LoginApi {
     accessToken: string,
@@ -34,12 +34,15 @@ export class FastWebApi implements LoginApi{
         this._accessToken = value;
     }
 
-    getApi<T>(uri:string): Promise<T> {
+    getApi<T>(uri: string, map?: Map<string, Object>): Promise<T> {
         this.loadMask(true);
+        if (map) {
+            uri = this.addParameterToUri(uri,map);
+        }
         return axios.get(this._URL + uri,
             {headers: {"Authorization": "Bearer " + this._accessToken}}
         )
-            .then((response:any)  => {
+            .then((response: any) => {
                     this.loadMask(false);
                     return response.data;
                 }
@@ -68,10 +71,20 @@ export class FastWebApi implements LoginApi{
     }
 
 
-    private loadMask(value: boolean){
+    private loadMask(value: boolean) {
         this.store.commit('setLoadMask', new class implements LoadMask {
-            show : boolean = value;
+            show: boolean = value;
         });
+    }
+
+    private addParameterToUri(uri: string, map: Map<string, Object>): string {
+        uri = uri.concat('?')
+        for (const item of map.keys()) {
+            uri = uri.concat(item, '=', map.get(item)?.toString() || '')
+            uri = uri.concat('&')
+        }
+        uri = uri.substring(0, uri.length - 1)
+        return uri;
     }
 
 }

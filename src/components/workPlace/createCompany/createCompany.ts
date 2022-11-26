@@ -10,7 +10,7 @@ import {
     DayOfWeek,
     DefaultSchedule, DefaultTableColumnItem,
     DefaultTableSettings,
-    Handler, ModalWindow,
+    Handler, ModalWindow, Restriction,
     ScheduleModel,
     State,
     TableColumnItem,
@@ -285,7 +285,9 @@ export default class CreateCompany extends Vue {
     private initScheduleColumn() : void{
         const dayOfWeek = new ScheduleColumnItem("dayOfWeek","День",true,ColumnTypes.noEditable,'25%' );
         const clockFrom = new ScheduleColumnItem("clockFrom","С",true,ColumnTypes.time,'10%' );
-        clockFrom.restriction = new class extends Handler<any, TableData, boolean> {
+        clockFrom.restrictions = new Array<Restriction>()
+        const messageTimeFrom = 'Неверный диапазон времени'
+        const checkTimeFrom = new class extends Handler<any, TableData, boolean> {
             function(val: any,dataItem : ScheduleModel): boolean {
                 const clockFrom = val;
                 const clockTo = dataItem.clockTo;
@@ -295,9 +297,16 @@ export default class CreateCompany extends Vue {
                 return clockFrom < clockTo;
             }
         }
-        clockFrom.errorMessage = 'Неверный диапазон времени'
+        clockFrom.restrictions.push(
+            new class extends Restriction {
+                restriction = checkTimeFrom
+                errorMessage = messageTimeFrom
+            }
+        )
         const clockTo = new ScheduleColumnItem("clockTo","По",true,ColumnTypes.time,'10%' );
-        clockTo.restriction = new class extends Handler<any, TableData, boolean> {
+        clockTo.restrictions = new Array<Restriction>()
+        const messageTimeTo = 'Неверный диапазон времени'
+        const checkTimeTo : Handler<any, TableData, boolean> = new class extends Handler<any, TableData, boolean> {
             function(val: any,dataItem : ScheduleModel): boolean {
                 const clockFrom = dataItem.clockFrom;
                 const clockTo = val;
@@ -306,8 +315,13 @@ export default class CreateCompany extends Vue {
                 }
                 return clockFrom < clockTo;
             }
-        }
-        clockTo.errorMessage = 'Неверный диапазон времени'
+        };
+        clockTo.restrictions.push(
+            new class extends Restriction {
+                restriction = checkTimeTo
+                errorMessage = messageTimeTo
+            }
+        )
         const work = new ScheduleColumnItem("work","Рабочий день",true,ColumnTypes.checkbox,'15%' );
         this.scheduleColumn.push(dayOfWeek,clockFrom,clockTo,work);
     }

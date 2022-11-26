@@ -2,7 +2,7 @@ import {
     ColumnTypes, ComboboxModel,
     DefaultTableColumnItem,
     DefaultTableSettings,
-    Handler, ModalWindow, PermissionModel, State,
+    Handler, ModalWindow, PermissionModel, Restriction, State,
     TableColumnItem,
     TableData, TableSettings
 } from "@/store/model";
@@ -99,7 +99,13 @@ export default class CreateActivity extends Vue {
 
     private initColumn() : void{
         const activity = new ActivityColumnItem("name","Название",true,ColumnTypes.text,'80%' );
-        activity.errorMessage = 'Название обязательно для заполнения'
+        activity.restrictions = new Array<Restriction>()
+        activity.restrictions.push(
+            new class extends Restriction {
+                restriction = undefined
+                errorMessage = 'Название обязательно для заполнения';
+            }
+        )
         this.columns.push(activity);
     }
 
